@@ -1,0 +1,8 @@
+name = "aarav-goel-portfolio"
+main = "worker.js"
+compatibility_date = "2026-08-02"
+workers_dev = true
+
+[assets]
+directory = "./out"
+binding = "ASSETS"
