@@ -13,7 +13,7 @@ export default function Home() {
   const sceneRef = useRef(null);
   const cursorRef = useRef(null);
   const cursorRingRef = useRef(null);
-  const pointer = useRef({ x: 0.5, y: 0.5, targetX: 0.5, targetY: 0.5 });
+  const pointer = useRef({ x: 0.5, y: 0.5, targetX: 0.5, targetY: 0.5, speed: 0 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -61,13 +61,17 @@ export default function Home() {
     const movePointer = (event) => {
       const x = event.clientX / window.innerWidth;
       const y = event.clientY / window.innerHeight;
+      const speed = Math.hypot(event.movementX || 0, event.movementY || 0);
       pointer.current.targetX = clamp(x, 0, 1);
       pointer.current.targetY = clamp(y, 0, 1);
+      pointer.current.speed = speed;
       scene.style.setProperty("--mx", `${event.clientX}px`);
       scene.style.setProperty("--my", `${event.clientY}px`);
-      cursor.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
-      cursorRing.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
-    };
+      scene.style.setProperty("--cursor-speed", `${speed}`);
+      cursor.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%) scale(${1 + speed * 0.002})`;
+      cursorRing.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%) scale(${1 + speed * 0.004})`;
+      cursorRing.style.opacity = `${clamp(0.32 + speed * 0.01, 0.35, 0.9)}`;
+      };
 
     const settlePointer = () => {
       pointer.current.x += (pointer.current.targetX - pointer.current.x) * 0.08;
@@ -87,6 +91,7 @@ export default function Home() {
 
       const cx = pointer.current.x * width;
       const cy = pointer.current.y * height;
+      const scroll = Number(scene.style.getPropertyValue("--scroll-progress") || 0);
 
       const glow = context.createRadialGradient(cx, cy, 0, cx, cy, Math.max(width, height) * 0.45);
       glow.addColorStop(0, "rgba(255,255,255,0.16)");
@@ -112,7 +117,7 @@ export default function Home() {
         const radius = particle.size * scale;
 
         context.beginPath();
-        context.fillStyle = `hsla(${particle.hue}, 100%, ${62 - particle.z * 12}%, ${0.3 + particle.z * 0.3})`;
+        context.fillStyle = `hsla(${particle.hue}, 100%, ${62 - particle.z * 12}%, ${0.26 + particle.z * 0.28})`;
         context.arc(px, py, radius, 0, Math.PI * 2);
         context.fill();
 
@@ -150,17 +155,47 @@ export default function Home() {
         context.beginPath();
         context.strokeStyle = index === 0 ? "rgba(6, 182, 212, 0.16)" : index === 1 ? "rgba(124, 58, 237, 0.13)" : "rgba(249, 115, 22, 0.10)";
         context.lineWidth = 1.4;
-        context.arc(cx, cy, ringRadius + Math.sin(frame * 0.02 + index) * 10, 0, Math.PI * 2);
+        context.arc(cx, cy, ringRadius + Math.sin(frame * 0.02 + index + scroll * 8) * 10, 0, Math.PI * 2);
         context.stroke();
       });
+
+      const gridRows = 14;
+      const gridCols = 16;
+      const gridW = width / gridCols;
+      const gridH = height / gridRows;
+
+      for (let row = 0; row < gridRows; row += 1) {
+        for (let col = 0; col < gridCols; col += 1) {
+          const x = col * gridW + gridW * 0.5;
+          const y = row * gridH + gridH * 0.5;
+          const sway = Math.sin(scroll * 8 + row * 0.34 + col * 0.22 + frame * 0.01) * 6;
+          const size = 1 + Math.max(0, 1 - Math.hypot(cx - x, cy - y) / 320) * 3;
+          context.beginPath();
+          context.fillStyle = `rgba(255, 255, 255, ${0.02 + Math.max(0, 1 - Math.hypot(cx - x, cy - y) / 420) * 0.11})`;
+          context.arc(x + sway, y - sway * 0.6, size, 0, Math.PI * 2);
+          context.fill();
+        }
+      }
 
       animationFrameId = requestAnimationFrame(draw);
     };
 
+    const updateScroll = () => {
+      const documentElement = document.documentElement;
+      const maxScroll = Math.max(1, documentElement.scrollHeight - window.innerHeight);
+      const scroll = clamp(window.scrollY / maxScroll, 0, 1);
+      const sceneProgress = scroll.toFixed(4);
+      scene.style.setProperty("--scroll-progress", sceneProgress);
+      scene.style.setProperty("--scroll-angle", `${scroll * 360}`);
+      scene.style.setProperty("--scroll-depth", `${scroll}`);
+    };
+
     resize();
+    updateScroll();
     draw();
 
     window.addEventListener("resize", resize);
+    window.addEventListener("scroll", updateScroll, { passive: true });
     window.addEventListener("pointermove", movePointer);
     window.addEventListener("pointerdown", movePointer);
 
@@ -168,6 +203,7 @@ export default function Home() {
       alive = false;
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener("resize", resize);
+      window.removeEventListener("scroll", updateScroll);
       window.removeEventListener("pointermove", movePointer);
       window.removeEventListener("pointerdown", movePointer);
     };
@@ -183,36 +219,56 @@ export default function Home() {
       <div className="mesh mesh-b" aria-hidden="true" />
       <div className="mesh mesh-c" aria-hidden="true" />
 
-      <section className="hero">
-        <div className="title-block">
-          <p className="eyebrow">AARAV GOEL</p>
-          <h1>
-            <span>Portfolio</span>
-            <span>publishing soon</span>
-          </h1>
-          <p className="lede">
-            A cinematic teaser with heavy motion, depth, and a custom cursor.
-          </p>
-        </div>
+      <div className="viewport">
+        <section className="hero">
+          <div className="title-block">
+            <p className="eyebrow">AARAV GOEL</p>
+            <h1>
+              <span>Portfolio</span>
+              <span>publishing soon</span>
+            </h1>
+            <p className="lede">
+              A cinematic teaser with heavy motion, depth, a responsive cursor, and scroll-reactive 3D layers.
+            </p>
+          </div>
 
-        <div className="glass-card glass-card-left" aria-hidden="true">
-          <span>STATUS</span>
-          <strong>IN PROGRESS</strong>
-        </div>
+          <div className="glass-card glass-card-left" aria-hidden="true">
+            <span>STATUS</span>
+            <strong>IN MOTION</strong>
+          </div>
 
-        <div className="glass-card glass-card-right" aria-hidden="true">
-          <span>DROP</span>
-          <strong>SOON</strong>
-        </div>
+          <div className="glass-card glass-card-right" aria-hidden="true">
+            <span>DROP</span>
+            <strong>SOON</strong>
+          </div>
 
-        <div className="stage" aria-hidden="true">
-          <div className="portal portal-a" />
-          <div className="portal portal-b" />
-          <div className="portal portal-c" />
-          <div className="chip chip-a" />
-          <div className="chip chip-b" />
-          <div className="chip chip-c" />
-        </div>
+          <div className="stage" aria-hidden="true">
+            <div className="portal portal-a" />
+            <div className="portal portal-b" />
+            <div className="portal portal-c" />
+            <div className="texture texture-a" />
+            <div className="texture texture-b" />
+            <div className="texture texture-c" />
+            <div className="chip chip-a" />
+            <div className="chip chip-b" />
+            <div className="chip chip-c" />
+          </div>
+        </section>
+      </div>
+
+      <section className="scroll-story" aria-hidden="true">
+        <article className="story-beat beat-one">
+          <span>01</span>
+          <strong>Depth</strong>
+        </article>
+        <article className="story-beat beat-two">
+          <span>02</span>
+          <strong>Motion</strong>
+        </article>
+        <article className="story-beat beat-three">
+          <span>03</span>
+          <strong>Texture</strong>
+        </article>
       </section>
 
       <div className="ticker" aria-hidden="true">

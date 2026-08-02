@@ -29,6 +29,8 @@ body {
 body {
   min-height: 100vh;
   cursor: none;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 a {
@@ -38,13 +40,14 @@ a {
 
 .scene {
   position: relative;
-  min-height: 100vh;
+  min-height: 340vh;
   overflow: hidden;
   isolation: isolate;
-  display: grid;
-  place-items: center;
   perspective: 1200px;
-  --lift: 0px;
+  --scroll-progress: 0;
+  --scroll-angle: 0deg;
+  --scroll-depth: 0;
+  --cursor-speed: 0;
 }
 
 .fx-canvas,
@@ -92,11 +95,18 @@ a {
   opacity: 0.7;
 }
 
+.viewport {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 2;
+}
+
 .hero {
   position: relative;
-  z-index: 2;
   width: min(1180px, 100%);
-  min-height: 100vh;
+  height: 100%;
+  margin: 0 auto;
   display: grid;
   place-items: center;
   padding: clamp(20px, 4vw, 56px);
@@ -196,6 +206,10 @@ h1 span:last-child {
   z-index: 1;
   transform-style: preserve-3d;
   pointer-events: none;
+  transform:
+    rotateX(calc(4deg + var(--scroll-progress) * 20deg))
+    rotateY(calc(-8deg + var(--scroll-progress) * 24deg))
+    translateZ(0);
 }
 
 .portal {
@@ -234,6 +248,150 @@ h1 span:last-child {
     inset 0 0 60px rgba(249, 115, 22, 0.08),
     0 0 40px rgba(249, 115, 22, 0.12);
   animation: pulse 6s ease-in-out infinite;
+}
+
+.texture {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 36px;
+  transform-style: preserve-3d;
+  mix-blend-mode: screen;
+  opacity: 0.74;
+  filter: saturate(1.2) contrast(1.1);
+}
+
+.texture-a {
+  width: min(112vw, 1240px);
+  height: min(66vw, 760px);
+  background:
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0 2px, transparent 2px 16px),
+    repeating-linear-gradient(0deg, rgba(6, 182, 212, 0.12) 0 1px, transparent 1px 18px),
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.1), transparent 68%);
+  mask-image: radial-gradient(circle at center, black 20%, transparent 72%);
+  transform: translate(-50%, -50%) translate3d(-220px, -130px, 100px) rotateX(70deg) rotateZ(-18deg);
+  animation: textureShift 18s linear infinite;
+}
+
+.texture-b {
+  width: min(92vw, 980px);
+  height: min(92vw, 980px);
+  border: 1px solid rgba(124, 58, 237, 0.18);
+  background:
+    conic-gradient(
+      from 0deg,
+      rgba(124, 58, 237, 0.22),
+      rgba(6, 182, 212, 0.06),
+      rgba(249, 115, 22, 0.1),
+      rgba(124, 58, 237, 0.22)
+    );
+  mask-image: radial-gradient(circle at center, transparent 10%, black 42%, transparent 72%);
+  transform: translate(-50%, -50%) translate3d(180px, 70px, 160px) rotateX(74deg) rotateZ(24deg);
+  animation: spin 28s linear infinite;
+}
+
+.texture-c {
+  width: min(48vw, 540px);
+  height: min(32vw, 360px);
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.16), transparent 24%, rgba(255, 255, 255, 0.14) 50%, transparent 76%, rgba(255, 255, 255, 0.16)),
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0 2px, transparent 2px 10px);
+  mask-image: radial-gradient(circle at center, black 28%, transparent 76%);
+  transform: translate(-50%, -50%) translate3d(0, 180px, 220px) rotateX(50deg) rotateZ(0deg);
+  animation: textureShift 12s linear infinite reverse;
+}
+
+.scroll-story {
+  position: relative;
+  z-index: 1;
+  padding: 100vh 0 28vh;
+  display: grid;
+  gap: 34vh;
+}
+
+.story-beat {
+  width: min(920px, calc(100% - 32px));
+  min-height: 56vh;
+  margin: 0 auto;
+  border-radius: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03)),
+    radial-gradient(circle at var(--mx) var(--my), rgba(255, 255, 255, 0.08), transparent 36%);
+  backdrop-filter: blur(18px);
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  position: sticky;
+  top: 18vh;
+  transform-style: preserve-3d;
+  overflow: hidden;
+}
+
+.story-beat::before,
+.story-beat::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.story-beat::before {
+  background:
+    linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.08) 18%, transparent 36%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 12px);
+  opacity: 0.5;
+  transform: translate3d(calc(var(--scroll-progress) * -110px), 0, 0);
+}
+
+.story-beat::after {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(6, 182, 212, 0.18), transparent 24%),
+    radial-gradient(circle at 80% 30%, rgba(124, 58, 237, 0.14), transparent 24%),
+    radial-gradient(circle at 50% 80%, rgba(249, 115, 22, 0.12), transparent 24%);
+  opacity: 0.9;
+}
+
+.story-beat span,
+.story-beat strong {
+  position: relative;
+  z-index: 1;
+  display: block;
+  margin-left: 5%;
+}
+
+.story-beat span {
+  padding-top: 24px;
+  font-size: 0.8rem;
+  letter-spacing: 0.45em;
+  color: rgba(247, 249, 255, 0.56);
+}
+
+.story-beat strong {
+  font-size: clamp(3rem, 12vw, 7rem);
+  line-height: 0.9;
+  margin-top: clamp(40px, 10vw, 120px);
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #ffffff, #9be9ff, #c4b5fd, #f59e0b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transform:
+    translate3d(calc(var(--scroll-progress) * -60px), 0, 0)
+    rotateX(calc(12deg - var(--scroll-progress) * 18deg))
+    rotateY(calc(-10deg + var(--scroll-progress) * 16deg));
+}
+
+.beat-one {
+  transform: perspective(1200px) rotateX(calc(14deg - var(--scroll-progress) * 10deg));
+}
+
+.beat-two {
+  transform: perspective(1200px) rotateX(calc(18deg - var(--scroll-progress) * 8deg)) translateY(4vh);
+}
+
+.beat-three {
+  transform: perspective(1200px) rotateX(calc(12deg - var(--scroll-progress) * 12deg)) translateY(8vh);
 }
 
 .chip {
@@ -402,6 +560,15 @@ h1 span:last-child {
   }
 }
 
+@keyframes textureShift {
+  from {
+    background-position: 0 0, 0 0, 0 0;
+  }
+  to {
+    background-position: 320px 240px, -180px 160px, 0 0;
+  }
+}
+
 @media (max-width: 720px) {
   body {
     overflow: auto;
@@ -409,6 +576,11 @@ h1 span:last-child {
 
   .scene {
     min-height: 100dvh;
+  }
+
+  .viewport {
+    position: relative;
+    height: 100dvh;
   }
 
   .hero {
@@ -436,6 +608,16 @@ h1 span:last-child {
 
   .chip-c {
     transform: translate(-50%, -50%) translate3d(0, 150px, 150px) rotateX(52deg) rotateZ(44deg) scale(0.72);
+  }
+
+  .scroll-story {
+    padding-top: 40vh;
+    gap: 22vh;
+  }
+
+  .story-beat {
+    min-height: 44vh;
+    top: 12vh;
   }
 
   .ticker {
