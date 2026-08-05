@@ -320,7 +320,7 @@ export default function AboutPage() {
         <video
           ref={videoRef}
           className="montage"
-          src="/about-montage.mp4"
+          src="https://files.catbox.moe/bdjr1r.mp4"
           poster="/aarav-photo.png"
           autoPlay
           loop
