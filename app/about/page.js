@@ -101,7 +101,6 @@ const roles = ["2nd Year Engineer", "Frontend Expert", "Vibe Coding Professional
 
 export default function AboutPage() {
   const sceneRef = useRef(null);
-  const videoRef = useRef(null);
   const audioRef = useRef(null);
   const cursorRef = useRef(null);
   const cursorRingRef = useRef(null);
@@ -119,7 +118,6 @@ export default function AboutPage() {
     if (withSound) {
       audioRef.current?.play().catch(() => {});
     }
-    videoRef.current?.play().catch(() => {});
   };
 
   const toggleSound = () => {
@@ -143,8 +141,6 @@ export default function AboutPage() {
   };
 
   useEffect(() => {
-    const video = videoRef.current;
-    video?.play().catch(() => {});
     document.body.style.overflow = gateOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
@@ -322,23 +318,15 @@ export default function AboutPage() {
       <audio ref={audioRef} src="/darkside.mp3" loop preload="auto" />
 
       <div className="video-stage" aria-hidden="true">
-        <video
-          ref={videoRef}
+        <iframe
           className="montage"
-          src="https://files.catbox.moe/bdjr1r.mp4"
-          poster="/aarav-photo.png"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          onLoadedData={(event) => {
-            try {
-              event.currentTarget.currentTime = VIDEO_SKIP;
-            } catch {
-              /* seek is best-effort */
-            }
-          }}
+          src={`https://www.youtube.com/embed/zQGQLEE1nQs?autoplay=1&mute=1&playsinline=1&loop=1&playlist=zQGQLEE1nQs&start=${VIDEO_SKIP}&controls=0&rel=0&modestbranding=1`}
+          title="Darkside AMV Anime Mix"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+          loading="eager"
         />
         <div className="video-shade" />
         <div className="video-noise" />
