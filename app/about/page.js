@@ -326,8 +326,13 @@ export default function AboutPage() {
           loop
           muted
           playsInline
-          onLoadedMetadata={(event) => {
-            event.currentTarget.currentTime = VIDEO_SKIP;
+          preload="auto"
+          onLoadedData={(event) => {
+            try {
+              event.currentTarget.currentTime = VIDEO_SKIP;
+            } catch {
+              /* seek is best-effort */
+            }
           }}
         />
         <div className="video-shade" />
