@@ -297,6 +297,11 @@ export default function AboutPage() {
       return undefined;
     }
     const revealables = scene.querySelectorAll("[data-reveal]");
+    scene.classList.add("reveal-ready");
+    if (typeof IntersectionObserver === "undefined") {
+      revealables.forEach((el) => el.classList.add("revealed"));
+      return undefined;
+    }
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
