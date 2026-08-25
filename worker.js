@@ -504,6 +504,85 @@ async function serveWidget(request, kind, env, ctx) {
 
 export const __internals = { renderCalendar, renderGraph, computeLevels };
 
+/* ---------------- badges ---------------- */
+
+const ICONS = {
+  github:
+    "M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.31.76-1.61-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6.01 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.63-5.47 5.92.43.37.81 1.1.81 2.22 0 1.61-.01 2.9-.01 3.3 0 .32.22.7.83.58A12.02 12.02 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z",
+  globe: "M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95a15.65 15.65 0 0 0-1.38-3.56A8.03 8.03 0 0 1 18.92 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56A7.99 7.99 0 0 1 5.08 16zm2.95-8H5.08a7.99 7.99 0 0 1 4.33-3.56A15.65 15.65 0 0 0 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z",
+  linkedin:
+    "M20.45 20.45h-3.56v-5.57c0-1.32-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z",
+};
+
+const BADGES = {
+  github: { label: "GITHUB", value: "coderaarav12", icon: "github", accent: "#ffffff" },
+  portfolio: { label: "PORTFOLIO", value: "goelaarav.dpdns.org", icon: "globe", accent: "#34d399" },
+  linkedin: { label: "LINKEDIN", value: "in/aaravgoel12", icon: "linkedin", accent: "#4f9cf9" },
+};
+
+function renderBadge(name) {
+  const b = BADGES[name];
+  if (!b) return null;
+  const H = 40;
+  const chipR = 13;
+  const chipX = 6 + chipR;
+  const textX = chipX + chipR + 10;
+  const labelW = b.label.length * 7.2;
+  const valueW = b.value.length * 8.2;
+  const W = Math.ceil(textX + Math.max(labelW, valueW) + 18);
+  const style = `
+    text{font-family:${MON_FONT}}
+    .bl{fill:rgba(230,237,243,.52);font-size:9px;letter-spacing:2px}
+    .bv{fill:#f0f3f6;font-size:13.5px;font-weight:700}
+  `;
+  const parts = [
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+<style>${style}</style>
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#1c232c"/>
+<stop offset="100%" stop-color="#12161d"/>
+</linearGradient>
+<linearGradient id="shine" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0%" stop-color="#fff" stop-opacity="0"/>
+<stop offset="50%" stop-color="#fff" stop-opacity=".10"/>
+<stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+</linearGradient>
+<clipPath id="cp"><rect width="${W}" height="${H}" rx="${H / 2}"/></clipPath>
+<filter id="ds" x="-20%" y="-40%" width="140%" height="200%">
+<feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity=".35"/>
+</filter>
+</defs>`,
+    `<g filter="url(#ds)">
+<g clip-path="url(#cp)">
+<rect width="${W}" height="${H}" fill="url(#bg)"/>
+<rect x=".5" y=".5" width="${W - 1}" height="${H - 1}" rx="${H / 2}" fill="none" stroke="rgba(255,255,255,.12)"/>
+<rect width="${W}" height="${H}" fill="url(#shine)" transform="translate(-120 0)">
+<animateTransform attributeName="transform" type="translate" values="-120 0;${W + 120} 0" dur="4.5s" begin="1.2s" repeatCount="indefinite"/>
+</rect>
+</g>
+</g>`,
+    `<circle cx="${chipX}" cy="${H / 2}" r="${chipR}" fill="${b.accent}" opacity=".14"/>
+<circle cx="${chipX}" cy="${H / 2}" r="${chipR}" fill="none" stroke="${b.accent}" stroke-opacity=".45"/>`,
+    `<g transform="translate(${chipX - 7} ${H / 2 - 7}) scale(${14 / 24})"><path d="${ICONS[b.icon]}" fill="${b.accent}"/></g>`,
+    `<text class="bl" x="${textX}" y="16">${b.label}</text>
+<text class="bv" x="${textX}" y="31">${b.value}</text>`,
+    `</svg>`,
+  ];
+  return parts.join("");
+}
+
+async function serveBadge(request, name) {
+  const body = renderBadge(name);
+  if (!body) return new Response("not found", { status: 404 });
+  return new Response(body, {
+    headers: {
+      "content-type": "image/svg+xml; charset=utf-8",
+      "cache-control": CACHE_CONTROL,
+    },
+  });
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -523,6 +602,9 @@ export default {
       return serveWidget(request, "graph", env, ctx);
 
     if (p === "/github/data") return serveData(request, env, ctx);
+
+    const badgeMatch = p.match(/^\/badge\/([a-z]+)(?:\.svg)?$/);
+    if (badgeMatch) return serveBadge(request, badgeMatch[1]);
 
     return env.ASSETS.fetch(request);
   },
