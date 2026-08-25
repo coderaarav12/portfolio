@@ -484,28 +484,54 @@ function renderGraph(data, themeName) {
 
 const SANS = "'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif";
 
-function renderBanner(themeName) {
+function renderHeader(themeName) {
   const dark = themeName !== "light";
-  const W = 900;
-  const H = 170;
+  const W = 900, H = 180;
   const ink = dark ? "#f6f7fb" : "#0b1220";
-  const sub = dark ? "rgba(230,237,243,.55)" : "rgba(11,18,32,.62)";
-  const dot = dark ? "rgba(255,255,255,.05)" : "rgba(11,18,32,.05)";
-  const orbO = dark ? 0.16 : 0.1;
+  const sub = dark ? "rgba(230,237,243,.5)" : "rgba(11,18,32,.55)";
+  const dot = dark ? "rgba(255,255,255,.045)" : "rgba(11,18,32,.045)";
+  const orbO = dark ? 0.14 : 0.09;
+  const scanCol = dark ? "rgba(52,211,153,.12)" : "rgba(5,150,105,.10)";
+  const gridLine = dark ? "rgba(255,255,255,.06)" : "rgba(11,18,32,.06)";
   const nameStops = dark
     ? ["#ffffff", "#eafff4", "#9ff0c8"]
     : ["#0b1220", "#0f3d2e", "#065f46"];
 
-  const style = `
-    .name{font-family:${SANS};font-size:54px;font-weight:800;letter-spacing:10px}
-    .tag{font-family:${MON_FONT};font-size:15px;letter-spacing:5px}
-  `;
+  const name = "AARAV GOEL";
+  const tagline = "FULL-STACK DEVELOPER &#183; AI BUILDER &#183; CREATIVE EDITOR";
+  const nameChars = name.split("");
+
+  const charAnims = nameChars.map((ch, i) => {
+    const bw = i * 32;
+    return `<tspan fill-opacity="0">${ch}<animate attributeName="fill-opacity" from="0" to="1" begin="${0.4 + i * 0.07}s" dur="0.35s" fill="freeze"/></tspan>`;
+  }).join("");
+
+  const lineAnims = nameChars.map((ch, i) => {
+    const bw = i * 32;
+    const cx = W / 2 - (nameChars.length * 32) / 2 + bw + 16;
+    return `<line x1="${cx}" y1="58" x2="${cx}" y2="88" stroke="url(#ul)" stroke-width="2.5" stroke-linecap="round" opacity="0"><animate attributeName="opacity" from="0" to=".7" begin="${0.5 + i * 0.07}s" dur="0.2s" fill="freeze"/><animate attributeName="y1" from="72" to="58" begin="${0.5 + i * 0.07}s" dur="0.3s" fill="freeze"/><animate attributeName="y2" from="72" to="88" begin="${0.5 + i * 0.07}s" dur="0.3s" fill="freeze"/></line>`;
+  }).join("");
+
+  const particles = [];
+  for (let i = 0; i < 18; i++) {
+    const px = 40 + Math.random() * (W - 80);
+    const py = 10 + Math.random() * (H - 20);
+    const pr = 0.8 + Math.random() * 1.2;
+    const pdur = 8 + Math.random() * 12;
+    const pdel = Math.random() * 6;
+    const colors = ["#34d399", "#22d3ee", "#a78bfa", "#f59e0b"];
+    const col = colors[i % 4];
+    particles.push(
+      `<circle cx="${px}" cy="${py}" r="${pr}" fill="${col}" opacity="0"><animate attributeName="opacity" values="0;.5;0" dur="${pdur}s" begin="${pdel}s" repeatCount="indefinite"/><animate attributeName="cy" values="${py};${py - 12 - Math.random() * 10};${py}" dur="${pdur}s" begin="${pdel}s" repeatCount="indefinite"/></circle>`
+    );
+  }
+
   const parts = [
     `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
 <defs>
 <linearGradient id="ng" x1="0" y1="0" x2="1" y2="0">
 <stop offset="0%" stop-color="${nameStops[0]}"/>
-<stop offset="55%" stop-color="${nameStops[1]}"/>
+<stop offset="50%" stop-color="${nameStops[1]}"/>
 <stop offset="100%" stop-color="${nameStops[2]}"/>
 </linearGradient>
 <linearGradient id="ul" x1="0" y1="0" x2="1" y2="0">
@@ -515,30 +541,85 @@ function renderBanner(themeName) {
 </linearGradient>
 <linearGradient id="shine" x1="0" y1="0" x2="1" y2="0">
 <stop offset="0%" stop-color="#fff" stop-opacity="0"/>
-<stop offset="50%" stop-color="#fff" stop-opacity=".05"/>
+<stop offset="40%" stop-color="#fff" stop-opacity=".08"/>
+<stop offset="60%" stop-color="#fff" stop-opacity=".08"/>
 <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
 </linearGradient>
-<pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
-<circle cx="2" cy="2" r="1.2" fill="${dot}"/>
+<linearGradient id="scanG" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#34d399" stop-opacity="0"/>
+<stop offset="50%" stop-color="#34d399" stop-opacity=".18"/>
+<stop offset="100%" stop-color="#34d399" stop-opacity="0"/>
+</linearGradient>
+<pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
+<circle cx="2" cy="2" r="1" fill="${dot}"/>
+</pattern>
+<pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+<line x1="60" y1="0" x2="60" y2="60" stroke="${gridLine}" stroke-width=".5"/>
+<line x1="0" y1="60" x2="60" y2="60" stroke="${gridLine}" stroke-width=".5"/>
 </pattern>
 <filter id="blur" x="-80%" y="-80%" width="260%" height="260%">
-<feGaussianBlur stdDeviation="26"/>
+<feGaussianBlur stdDeviation="28"/>
 </filter>
+<filter id="tglow" x="-20%" y="-20%" width="140%" height="140%">
+<feGaussianBlur in="SourceGraphic" stdDeviation="4" result="b"/>
+<feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+<clipPath id="rp"><rect width="${W}" height="${H}" rx="18"/></clipPath>
 </defs>`,
-    `<rect width="${W}" height="${H}" fill="none"/>`,
-    `<g filter="url(#blur)" opacity="${orbO}">
-<ellipse cx="120" cy="30" rx="110" ry="46" fill="#34d399"/>
-<ellipse cx="790" cy="40" rx="100" ry="42" fill="#22d3ee"/>
-<ellipse cx="480" cy="160" rx="130" ry="44" fill="#a78bfa"/>
+
+    `<g clip-path="url(#rp)">
+<rect width="${W}" height="${H}" fill="${dark ? "#0d1117" : "#f8fafc"}"/>
+<rect x=".5" y=".5" width="${W - 1}" height="${H - 1}" rx="18" fill="none" stroke="rgba(255,255,255,.08)"/>
+<rect width="${W}" height="${H}" fill="url(#grid)"/>
+<rect width="${W}" height="${H}" fill="url(#dots)"/>
 </g>`,
-    `<rect width="${W}" height="${H}" fill="url(#dots)"/>`,
-    `<rect x="140" y="150" width="620" height="1" fill="${dark ? "rgba(255,255,255,.10)" : "rgba(11,18,32,.10)"}"/>`,
-    `<text class="name" x="${W / 2 + 5}" y="82" text-anchor="middle" fill="url(#ng)">AARAV GOEL</text>`,
-    `<text class="tag" x="${W / 2}" y="116" text-anchor="middle" fill="${sub}">FULL-STACK DEVELOPER &#183; AI BUILDER &#183; CREATIVE EDITOR</text>`,
-    `<rect x="${W / 2 - 120}" y="136" width="240" height="3" rx="1.5" fill="url(#ul)"/>`,
-    `<rect width="150" height="${H}" fill="url(#shine)" transform="translate(-200 0)">
-<animateTransform attributeName="transform" type="translate" values="-200 0;${W + 200} 0" dur="7s" begin="2s" repeatCount="indefinite"/>
+
+    `<g filter="url(#blur)" opacity="${orbO}">
+<ellipse cx="130" cy="35" rx="110" ry="48" fill="#34d399">
+<animate attributeName="cx" values="130;170;130" dur="14s" repeatCount="indefinite"/>
+<animate attributeName="cy" values="35;25;35" dur="11s" repeatCount="indefinite"/>
+</ellipse>
+<ellipse cx="770" cy="42" rx="100" ry="40" fill="#22d3ee">
+<animate attributeName="cx" values="770;730;770" dur="12s" repeatCount="indefinite"/>
+<animate attributeName="cy" values="42;55;42" dur="15s" repeatCount="indefinite"/>
+</ellipse>
+<ellipse cx="450" cy="165" rx="120" ry="42" fill="#a78bfa">
+<animate attributeName="cx" values="450;500;450" dur="16s" repeatCount="indefinite"/>
+<animate attributeName="cy" values="165;150;165" dur="13s" repeatCount="indefinite"/>
+</ellipse>
+</g>`,
+
+    particles.join("\n"),
+
+    `<g filter="url(#tglow)">
+<text x="${W / 2}" y="78" text-anchor="middle" font-family="${SANS}" font-size="52" font-weight="800" letter-spacing="8" fill="url(#ng)">
+${charAnims}
+</text>
+</g>`,
+
+    lineAnims,
+
+    `<rect x="${W / 2 - 130}" y="96" width="0" height="2.5" rx="1.25" fill="url(#ul)">
+<animate attributeName="width" from="0" to="260" begin="1.6s" dur="0.6s" fill="freeze"/>
+<animate attributeName="x" from="${W / 2}" to="${W / 2 - 130}" begin="1.6s" dur="0.6s" fill="freeze"/>
 </rect>`,
+
+    `<text x="${W / 2}" y="124" text-anchor="middle" font-family="${MON_FONT}" font-size="13.5" letter-spacing="5" fill="${sub}" fill-opacity="0">
+${tagline}
+<animate attributeName="fill-opacity" from="0" to="1" begin="2.2s" dur="0.8s" fill="freeze"/>
+</text>`,
+
+    `<rect x="0" y="0" width="${W}" height="2" fill="url(#scanG)" opacity="0">
+<animate attributeName="y" from="-4" to="${H + 4}" dur="3.5s" begin="0.3s" repeatCount="indefinite"/>
+<animate attributeName="opacity" from="0" to="1" begin="0.3s" dur="0.5s" fill="freeze"/>
+</rect>`,
+
+    `<rect width="160" height="${H}" fill="url(#shine)" transform="translate(-200 0)">
+<animateTransform attributeName="transform" type="translate" values="-200 0;${W + 200} 0" dur="5s" begin="3s" repeatCount="indefinite"/>
+</rect>`,
+
+    `<line x1="40" y1="${H - 1}" x2="${W - 40}" y2="${H - 1}" stroke="url(#ul)" stroke-width="1" opacity=".2" stroke-linecap="round"/>`,
+
     `</svg>`,
   ];
   return parts.join("");
@@ -719,7 +800,7 @@ async function serveBadge(request, name) {
 
 function serveBanner(request) {
   const theme = new URL(request.url).searchParams.get("theme") || "dark";
-  return new Response(renderBanner(theme), {
+  return new Response(renderHeader(theme), {
     headers: {
       "content-type": "image/svg+xml; charset=utf-8",
       "cache-control": CACHE_CONTROL,
@@ -760,6 +841,7 @@ export default {
     if (badgeMatch) return serveBadge(request, badgeMatch[1]);
 
     if (p === "/banner.svg" || p === "/banner") return serveBanner(request);
+    if (p === "/github/header.svg" || p === "/github/header") return serveBanner(request);
     if (p === "/stats.svg" || p === "/stats") return serveStats(request);
 
     return env.ASSETS.fetch(request);
