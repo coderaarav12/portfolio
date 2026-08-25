@@ -53,7 +53,7 @@ const THEMES = {
 const memCache = new Map(); // key -> { t, data }
 const MEM_TTL = 30 * 60 * 1000;
 const CACHE_CONTROL =
-  "public, max-age=1800, s-maxage=21600, stale-while-revalidate=86400";
+  "public, max-age=300, s-maxage=1800, stale-while-revalidate=86400";
 
 /* ---------------- date helpers ---------------- */
 
