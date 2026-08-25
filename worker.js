@@ -462,7 +462,7 @@ function renderGraph(data, themeName) {
 
   // peak marker
   parts.push(
-    `<g><circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="3.4" fill="${th.accent}">` +
+    `<g><title>peak day: ${series[peakIdx].count} contributions on ${niceDate(series[peakIdx].date)}</title><circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="3.4" fill="${th.accent}">` +
       `<animate attributeName="r" values="3.4;6;3.4" dur="2.4s" repeatCount="indefinite"/>` +
       `<animate attributeName="opacity" values="1;.35;1" dur="2.4s" repeatCount="indefinite"/></circle>` +
       `<text x="${Math.min(px + 9, W - padR).toFixed(1)}" y="${(py - 9).toFixed(1)}" font-size="11" font-weight="700" fill="${th.ink}">peak ${series[peakIdx].count}</text></g>`
@@ -522,6 +522,33 @@ export default {
     if (p === "/github/graph.svg" || p === "/github/graph")
       return serveWidget(request, "graph", env, ctx);
 
+    if (p === "/github/data") return serveData(request, env, ctx);
+
     return env.ASSETS.fetch(request);
   },
 };
+
+async function serveData(request, env, ctx) {
+  const url = new URL(request.url);
+  const cacheKey = new Request(url.toString(), request);
+  const hit = await caches.default.match(cacheKey);
+  if (hit) return hit;
+
+  const data = await getData(env);
+  const payload = {
+    user: USERNAME,
+    source: data.source,
+    total: data.total,
+    generated_at: new Date().toISOString(),
+    days: data.days,
+  };
+  const res = new Response(JSON.stringify(payload), {
+    headers: {
+      "content-type": "application/json; charset=utf-8",
+      "access-control-allow-origin": "*",
+      "cache-control": CACHE_CONTROL,
+    },
+  });
+  ctx.waitUntil(caches.default.put(cacheKey, res.clone()));
+  return res;
+}

@@ -25,6 +25,13 @@ const projects = [
     description: "Python backend for the older SRM planning stack.",
     link: "https://github.com/coderaarav12/SRMPlannerBackend--OLD",
   },
+  {
+    name: "GitHub Activity",
+    description:
+      "Live contribution calendar and push graph — hover any day for details.",
+    link: "/activity",
+    tag: "Live",
+  },
 ];
 
 export default function Home() {
@@ -159,12 +166,12 @@ export default function Home() {
               key={project.name}
               className="project-card"
               href={project.link}
-              target="_blank"
+              target={project.link.startsWith("http") ? "_blank" : undefined}
               rel="noreferrer"
               style={{ "--card-index": index }}
             >
               <div className="project-top">
-                <span>GitHub</span>
+                <span>{project.tag || "GitHub"}</span>
                 <span>{index + 1}</span>
               </div>
               <strong>{project.name}</strong>
