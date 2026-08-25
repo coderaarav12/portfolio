@@ -480,6 +480,134 @@ function renderGraph(data, themeName) {
   return parts.join("");
 }
 
+/* ---------------- banner ---------------- */
+
+const SANS = "'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif";
+
+function renderBanner(themeName) {
+  const dark = themeName !== "light";
+  const W = 900;
+  const H = 170;
+  const ink = dark ? "#f6f7fb" : "#0b1220";
+  const sub = dark ? "rgba(230,237,243,.55)" : "rgba(11,18,32,.62)";
+  const dot = dark ? "rgba(255,255,255,.05)" : "rgba(11,18,32,.05)";
+  const orbO = dark ? 0.16 : 0.1;
+  const nameStops = dark
+    ? ["#ffffff", "#eafff4", "#9ff0c8"]
+    : ["#0b1220", "#0f3d2e", "#065f46"];
+
+  const style = `
+    .name{font-family:${SANS};font-size:54px;font-weight:800;letter-spacing:10px}
+    .tag{font-family:${MON_FONT};font-size:15px;letter-spacing:5px}
+  `;
+  const parts = [
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+<defs>
+<linearGradient id="ng" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0%" stop-color="${nameStops[0]}"/>
+<stop offset="55%" stop-color="${nameStops[1]}"/>
+<stop offset="100%" stop-color="${nameStops[2]}"/>
+</linearGradient>
+<linearGradient id="ul" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0%" stop-color="#34d399"/>
+<stop offset="50%" stop-color="#22d3ee"/>
+<stop offset="100%" stop-color="#a78bfa"/>
+</linearGradient>
+<linearGradient id="shine" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0%" stop-color="#fff" stop-opacity="0"/>
+<stop offset="50%" stop-color="#fff" stop-opacity=".05"/>
+<stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+</linearGradient>
+<pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+<circle cx="2" cy="2" r="1.2" fill="${dot}"/>
+</pattern>
+<filter id="blur" x="-80%" y="-80%" width="260%" height="260%">
+<feGaussianBlur stdDeviation="26"/>
+</filter>
+</defs>`,
+    `<rect width="${W}" height="${H}" fill="none"/>`,
+    `<g filter="url(#blur)" opacity="${orbO}">
+<ellipse cx="120" cy="30" rx="110" ry="46" fill="#34d399"/>
+<ellipse cx="790" cy="40" rx="100" ry="42" fill="#22d3ee"/>
+<ellipse cx="480" cy="160" rx="130" ry="44" fill="#a78bfa"/>
+</g>`,
+    `<rect width="${W}" height="${H}" fill="url(#dots)"/>`,
+    `<rect x="140" y="150" width="620" height="1" fill="${dark ? "rgba(255,255,255,.10)" : "rgba(11,18,32,.10)"}"/>`,
+    `<text class="name" x="${W / 2 + 5}" y="82" text-anchor="middle" fill="url(#ng)">AARAV GOEL</text>`,
+    `<text class="tag" x="${W / 2}" y="116" text-anchor="middle" fill="${sub}">FULL-STACK DEVELOPER &#183; AI BUILDER &#183; CREATIVE EDITOR</text>`,
+    `<rect x="${W / 2 - 120}" y="136" width="240" height="3" rx="1.5" fill="url(#ul)"/>`,
+    `<rect width="150" height="${H}" fill="url(#shine)" transform="translate(-200 0)">
+<animateTransform attributeName="transform" type="translate" values="-200 0;${W + 200} 0" dur="7s" begin="2s" repeatCount="indefinite"/>
+</rect>`,
+    `</svg>`,
+  ];
+  return parts.join("");
+}
+
+/* ---------------- stats strip ---------------- */
+
+function renderStats() {
+  const us = snapshot?.user_stats || {};
+  const segs = [
+    { icon: "repo", value: us.repos ?? 0, label: "REPOS", accent: "#34d399" },
+    { icon: "star", value: us.stars ?? 0, label: "STARS", accent: "#f59e0b" },
+    { icon: "person", value: us.followers ?? 0, label: "FOLLOWERS", accent: "#4f9cf9" },
+    { icon: "bolt", value: snapshot?.total ?? 0, label: "PUSHES \u00B7 1Y", accent: "#a78bfa" },
+  ];
+  const H = 46;
+  const padX = 20;
+  const widths = segs.map(
+    (s) => 22 + 7 + String(s.value).length * 8.2 + 7 + s.label.length * 6.9 + 20
+  );
+  const W = Math.ceil(widths.reduce((a, b) => a + b, 0) + padX * 2 - 20 + (segs.length - 1));
+  const style = `
+    text{font-family:${MON_FONT}}
+    .sv{fill:#f0f3f6;font-size:13.5px;font-weight:700}
+    .sl{fill:rgba(230,237,243,.5);font-size:9px;letter-spacing:1.5px}
+  `;
+  const parts = [
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+<style>${style}</style>
+<defs>
+<linearGradient id="sbg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#1c232c"/>
+<stop offset="100%" stop-color="#12161d"/>
+</linearGradient>
+<linearGradient id="sshine" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0%" stop-color="#fff" stop-opacity="0"/>
+<stop offset="50%" stop-color="#fff" stop-opacity=".08"/>
+<stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+</linearGradient>
+<clipPath id="scp"><rect width="${W}" height="${H}" rx="${H / 2}"/></clipPath>
+</defs>`,
+    `<g clip-path="url(#scp)">
+<rect width="${W}" height="${H}" fill="url(#sbg)"/>
+<rect x=".5" y=".5" width="${W - 1}" height="${H - 1}" rx="${H / 2}" fill="none" stroke="rgba(255,255,255,.12)"/>
+<rect width="130" height="${H}" fill="url(#sshine)" transform="translate(-160 0)">
+<animateTransform attributeName="transform" type="translate" values="-160 0;${W + 160} 0" dur="6s" begin="1.5s" repeatCount="indefinite"/>
+</rect>
+</g>`,
+  ];
+  let x = padX;
+  segs.forEach((s, i) => {
+    const cy = H / 2;
+    parts.push(`<circle cx="${x + 11}" cy="${cy}" r="11" fill="${s.accent}" opacity=".14"/>`);
+    parts.push(
+      `<g transform="translate(${x + 11 - 6} ${cy - 6}) scale(${12 / 24})"><path d="${ICONS[s.icon]}" fill="${s.accent}"/></g>`
+    );
+    const tx = x + 22 + 7;
+    parts.push(`<text class="sv" x="${tx}" y="${cy + 4.5}">${Number(s.value).toLocaleString("en-US")}</text>`);
+    parts.push(`<text class="sl" x="${tx + String(s.value).length * 8.2 + 7}" y="${cy + 4}">${s.label.replace("\u00B7", "&#183;")}</text>`);
+    x += widths[i];
+    if (i < segs.length - 1) {
+      parts.push(`<line x1="${x}" y1="12" x2="${x}" y2="${H - 12}" stroke="rgba(255,255,255,.10)"/>`);
+      x += 1;
+    }
+  });
+  parts.push(`</svg>`);
+  return parts.join("");
+}
+
 /* ---------------- worker ---------------- */
 
 const JSON_HEADERS = {
@@ -512,12 +640,18 @@ const ICONS = {
   globe: "M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95a15.65 15.65 0 0 0-1.38-3.56A8.03 8.03 0 0 1 18.92 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56A7.99 7.99 0 0 1 5.08 16zm2.95-8H5.08a7.99 7.99 0 0 1 4.33-3.56A15.65 15.65 0 0 0 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z",
   linkedin:
     "M20.45 20.45h-3.56v-5.57c0-1.32-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z",
+  mail: "M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z",
+  repo: "M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z",
+  star: "M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z",
+  person: "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z",
+  bolt: "M7 2v11h3v9l7-12h-4l4-8z",
 };
 
 const BADGES = {
   github: { label: "GITHUB", value: "coderaarav12", icon: "github", accent: "#ffffff" },
   portfolio: { label: "PORTFOLIO", value: "goelaarav.dpdns.org", icon: "globe", accent: "#34d399" },
   linkedin: { label: "LINKEDIN", value: "in/aaravgoel12", icon: "linkedin", accent: "#4f9cf9" },
+  email: { label: "EMAIL", value: "goelaarav290@gmail.com", icon: "mail", accent: "#f59e0b" },
 };
 
 function renderBadge(name) {
@@ -583,6 +717,25 @@ async function serveBadge(request, name) {
   });
 }
 
+function serveBanner(request) {
+  const theme = new URL(request.url).searchParams.get("theme") || "dark";
+  return new Response(renderBanner(theme), {
+    headers: {
+      "content-type": "image/svg+xml; charset=utf-8",
+      "cache-control": CACHE_CONTROL,
+    },
+  });
+}
+
+function serveStats(request) {
+  return new Response(renderStats(), {
+    headers: {
+      "content-type": "image/svg+xml; charset=utf-8",
+      "cache-control": CACHE_CONTROL,
+    },
+  });
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -605,6 +758,9 @@ export default {
 
     const badgeMatch = p.match(/^\/badge\/([a-z]+)(?:\.svg)?$/);
     if (badgeMatch) return serveBadge(request, badgeMatch[1]);
+
+    if (p === "/banner.svg" || p === "/banner") return serveBanner(request);
+    if (p === "/stats.svg" || p === "/stats") return serveStats(request);
 
     return env.ASSETS.fetch(request);
   },

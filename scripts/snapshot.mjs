@@ -39,6 +39,15 @@ const repos = await ghList(`https://api.github.com/users/${USERNAME}/repos`);
 const targets = repos.filter((r) => !r.fork).map((r) => r.name);
 console.log(`repos scanned: ${targets.length} (non-fork)`);
 
+const profile = await gh(`https://api.github.com/users/${USERNAME}`);
+const stars = repos.reduce((s, r) => s + (r.stargazers_count || 0), 0);
+const userStats = {
+  repos: profile.public_repos ?? targets.length,
+  followers: profile.followers ?? 0,
+  stars,
+};
+console.log(`profile: ${userStats.repos} repos, ${userStats.followers} followers, ${userStats.stars} stars`);
+
 const since = new Date(Date.now() - YEAR_DAYS * 86400000).toISOString();
 const counts = new Map();
 
@@ -76,6 +85,7 @@ const out = {
   generated_at: new Date().toISOString(),
   source: "commits-snapshot",
   user: USERNAME,
+  user_stats: userStats,
   total,
   days,
 };
