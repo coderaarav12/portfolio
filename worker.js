@@ -8,6 +8,8 @@
 const USERNAME = "coderaarav12";
 const TZ = "Asia/Kolkata";
 
+import snapshot from "./data/github-snapshot.json" with { type: "json" };
+
 const CELL = 11;
 const GAP = 3;
 const STEP = CELL + GAP;
@@ -177,18 +179,56 @@ export async function getData(env) {
   const cached = memCache.get("gh");
   if (cached && Date.now() - cached.t < MEM_TTL) return cached.data;
   let data = null;
-  try {
-    data = env?.GITHUB_TOKEN
-      ? await fetchGraphQL(env.GITHUB_TOKEN)
-      : await fetchPushEvents();
-  } catch (e) {
+  if (env?.GITHUB_TOKEN) {
     try {
-      if (env?.GITHUB_TOKEN) data = await fetchPushEvents();
+      data = await fetchGraphQL(env.GITHUB_TOKEN);
+    } catch (_) {}
+  }
+  if (!data && snapshot?.days?.length) {
+    data = normalizeSnapshot(snapshot);
+  }
+  if (data) {
+    // overlay the freshest public push activity on top of the snapshot
+    try {
+      const events = await fetchPushEvents();
+      data = overlayRecent(data, events, 7);
+    } catch (_) {}
+  }
+  if (!data) {
+    try {
+      data = await fetchPushEvents();
     } catch (_) {}
   }
   if (!data) data = cached?.data || emptyYear();
   memCache.set("gh", { t: Date.now(), data });
   return data;
+}
+
+function normalizeSnapshot(snap) {
+  const end = utcDay(dayKey(Date.now()));
+  const byDate = new Map(snap.days.map((d) => [d.date, d.count]));
+  const first = snap.days[0].date;
+  const start = sundayOnOrBefore(utcDay(first));
+  const days = [];
+  let total = 0;
+  for (let t = start; t <= end; t += 86400000) {
+    const k = dayKey(t);
+    const c = byDate.get(k) ?? 0;
+    total += c;
+    days.push({ date: k, count: c });
+  }
+  return { source: "snapshot", days, total };
+}
+
+function overlayRecent(base, events, windowDays) {
+  const byDate = new Map(events.days.map((d) => [d.date, d.count]));
+  const days = base.days.map((d, i) => {
+    if (i < base.days.length - windowDays) return d;
+    const ev = byDate.get(d.date) || 0;
+    return ev > d.count ? { ...d, count: ev } : d;
+  });
+  const total = days.reduce((s, d) => s + (d.count || 0), 0);
+  return { ...base, days, total };
 }
 
 /* ---------------- shared rendering ---------------- */
