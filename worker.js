@@ -842,9 +842,14 @@ export default {
 
     if (p === "/banner.svg" || p === "/banner") return serveBanner(request);
     if (p === "/github/header.svg" || p === "/github/header") return serveBanner(request);
-    if (p === "/stats.svg" || p === "/stats") return serveStats(request);
-
-    return env.ASSETS.fetch(request);
+    let res = await env.ASSETS.fetch(request);
+    if (res.status === 404 && !p.includes(".")) {
+      const htmlUrl = new URL(request.url);
+      htmlUrl.pathname = `${p}.html`;
+      const htmlRes = await env.ASSETS.fetch(new Request(htmlUrl.toString(), request));
+      if (htmlRes.status < 400) return htmlRes;
+    }
+    return res;
   },
 };
 

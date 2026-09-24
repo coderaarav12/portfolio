@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import "./about.css";
 
 const TRAIL = 9;
-const VIDEO_SKIP = 8;
 
 const Icons = {
   github: (
@@ -318,22 +317,29 @@ export default function AboutPage() {
       <audio ref={audioRef} src="/darkside.mp3" loop preload="auto" />
 
       <div className="video-stage" aria-hidden="true">
-        <iframe
+        <video
           className="montage"
-          src={`https://www.youtube.com/embed/zQGQLEE1nQs?autoplay=1&mute=1&playsinline=1&loop=1&playlist=zQGQLEE1nQs&start=${VIDEO_SKIP}&controls=0&rel=0&modestbranding=1`}
-          title="Darkside AMV Anime Mix"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerPolicy="strict-origin-when-cross-origin"
-          allowFullScreen
-          loading="eager"
-        />
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster="/ambient-poster.jpg"
+          preload="auto"
+        >
+          <source src="/ambient-bg.mp4" type="video/mp4" />
+        </video>
         <div className="video-shade" />
         <div className="video-noise" />
         <div className="bg-orb orb-a" />
         <div className="bg-orb orb-b" />
         <div className="bg-orb orb-c" />
       </div>
+
+      <nav className="about-nav" aria-label="About navigation">
+        <a href="/" className="nav-back-link">
+          <span aria-hidden="true">←</span> Back to Portfolio
+        </a>
+      </nav>
 
       {gateOpen ? (
         <div className="gate" role="dialog" aria-modal="true" aria-label="Enable sound?">
