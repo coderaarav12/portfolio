@@ -75,9 +75,8 @@ const projects = [
     category: "Developer Library",
     description:
       "Direct cloud repository of curated mobile and web development tutorials, architecture diagrams, study materials, and reference guides for developers.",
-    tags: ["Cloudflare Worker", "Resources", "Guides", "Cloud Storage"],
-    link: "/app_tutorials",
-    isInternal: true,
+    tags: ["Google Drive", "Resources", "Guides", "Cloud Storage"],
+    link: "https://drive.google.com/drive/folders/1gDYo3WZRP6ItngaANJCPS8Q8y2GMKLIN?usp=drive_link",
     highlight: "Curated Guides & Assets",
     stats: "Handpicked Study Vault",
     badge: "Resources",

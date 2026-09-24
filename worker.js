@@ -822,9 +822,9 @@ export default {
     const url = new URL(request.url);
     const p = url.pathname.replace(/\/$/, "");
 
-    if (p === "/app_tutorials") {
+    if (p.toLowerCase() === "/app_tutorials" || p.toLowerCase() === "/app_tutorials.html") {
       return Response.redirect(
-        "https://drive.google.com/drive/folders/1gDYo3WZRP6ItngaANJCPS8Q8y2GMKLIN?usp=sharing",
+        "https://drive.google.com/drive/folders/1gDYo3WZRP6ItngaANJCPS8Q8y2GMKLIN?usp=drive_link",
         302
       );
     }
