@@ -822,11 +822,23 @@ export default {
     const url = new URL(request.url);
     const p = url.pathname.replace(/\/$/, "");
 
-    if (p.toLowerCase() === "/app_tutorials" || p.toLowerCase() === "/app_tutorials.html") {
-      return Response.redirect(
-        "https://drive.google.com/drive/folders/1gDYo3WZRP6ItngaANJCPS8Q8y2GMKLIN?usp=drive_link",
-        302
-      );
+    const cleanPath = p.toLowerCase();
+    if (
+      cleanPath === "/app_tutorials" ||
+      cleanPath === "/app-tutorials" ||
+      cleanPath === "/app_tutorials.html" ||
+      cleanPath === "/tutorials"
+    ) {
+      return new Response(null, {
+        status: 302,
+        headers: {
+          "Location":
+            "https://drive.google.com/drive/folders/1gDYo3WZRP6ItngaANJCPS8Q8y2GMKLIN?usp=drive_link",
+          "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
+          "Pragma": "no-cache",
+          "Expires": "0",
+        },
+      });
     }
 
     if (p === "/github/calendar.svg" || p === "/github/calendar")
