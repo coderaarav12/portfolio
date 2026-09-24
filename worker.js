@@ -824,7 +824,7 @@ export default {
 
     if (p === "/app_tutorials") {
       return Response.redirect(
-        "https://drive.google.com/drive/folders/1sqvi_gx5YjGuF1VCUn9n7HH1EY-EXN7_?usp=sharing",
+        "https://drive.google.com/drive/folders/1gDYo3WZRP6ItngaANJCPS8Q8y2GMKLIN?usp=sharing",
         302
       );
     }
