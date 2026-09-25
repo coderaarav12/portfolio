@@ -4,140 +4,314 @@ import { useEffect, useRef, useState } from "react";
 
 const projects = [
   {
-    title: "EduTechSRM",
-    subtitle: "SRMIST KTR Academic Dashboard",
-    category: "Flagship / Academic Portal",
+    title: "EdutechSRM",
+    subtitle: "Full-Stack Academic Dashboard",
+    category: "Flagship / Full-Stack & AI",
+    period: "March 2026 – Present",
     description:
-      "Comprehensive academic companion for SRMIST KTR students. Features timetable synchronization, attendance tracking with threshold alerts, internal marks computation, CGPA forecasting, and an integrated Gemini AI assistant.",
-    tags: ["Next.js", "React", "Tailwind CSS", "SRMIST API", "Gemini AI", "Cloudflare"],
-    link: "https://github.com/coderaarav12/edutechsrm-frontend-in",
-    highlight: "Daily Academic Companion",
-    stats: "Attendance · Timetable · Marks · AI",
+      "Comprehensive academic portal for SRMIST KTR students currently used by 250+ active users. Built on a serverless architecture with token-based session security (no password storage). Integrates timetable synchronization, attendance tracking with threshold alerts, internal marks computation, CGPA forecasting, and an academic AI assistant.",
+    demoInfo: "Demo Credentials (Non-SRM) — NetID: dm1234 | Password: edutechsrm@124",
+    tags: [
+      "Next.js 16",
+      "Tailwind CSS",
+      "Framer Motion",
+      "Radix UI",
+      "Serverless TypeScript",
+      "Cloudflare Workers",
+      "Playwright Scraping",
+    ],
+    liveLink: "https://www.edutechsrm.in",
+    githubLink: "https://github.com/coderaarav12/edutechsrm-frontend-in",
+    highlight: "250+ Active Users",
     badge: "Flagship",
     accent: "#8b5cf6",
   },
   {
-    title: "MediaHub",
-    subtitle: "Multi-Source Streaming Platform",
-    category: "Web App / Entertainment",
+    title: "Ripple",
+    subtitle: "Regional Medicine Shortage Detection & Redistribution",
+    category: "AI & Network Intelligence / Hackathon",
+    period: "Manipal Hackathon '26 (Sep 2026)",
     description:
-      "High-performance media streaming platform allowing users to search and stream movies, TV shows, and anime with multi-provider embed fallbacks, instant search indexing, and a sleek dark cinema UI.",
-    tags: ["React 19", "Next.js", "Custom APIs", "Responsive Video", "Tailwind"],
-    link: "https://github.com/coderaarav12/media-hub-frontend",
-    highlight: "Fast Streaming & Zero Bloat",
-    stats: "Movies · TV Shows · Anime",
-    badge: "Featured",
+      "An intelligent, early-warning supply chain network intelligence platform designed around one foundational insight: 'One low facility is noise; several nearby facilities running low on the same medicine at the same time is signal.' Catches emerging regional shortages days before facilities hit zero by analyzing consumption velocity, confidence-bounded stock runways, and geospatial clustering.",
+    tags: [
+      "Python",
+      "FastAPI",
+      "Uvicorn",
+      "Pandas",
+      "NumPy",
+      "SciPy",
+      "Scikit-learn",
+      "Leaflet.js",
+      "JavaScript",
+    ],
+    githubLink: "https://github.com/4rch1t/ripple",
+    highlight: "Manipal Hackathon 2026",
+    badge: "Hackathon '26",
     accent: "#06b6d4",
   },
   {
-    title: "SRM Sarthi Web",
-    subtitle: "SRM Campus Utility Portal",
-    category: "Campus Utility",
+    title: "SyncMasters",
+    subtitle: "CPSE Material Intelligence Portal",
+    category: "GovTech & GenAI / Smart India Hackathon",
+    period: "Smart India Hackathon (Sep 2026)",
     description:
-      "Lightweight, mobile-first student utility web experience deployed on Vercel. Delivers instant access to verified university portals, campus maps, bus schedules, and essential student links.",
-    tags: ["Next.js", "React", "Vercel Edge", "Tailwind CSS"],
-    link: "https://github.com/coderaarav12/srm-sarthi-web",
-    highlight: "Deployed on Vercel",
-    stats: "Instant Load · Campus Utilities",
-    badge: "Live App",
+      "Full-stack GovTech platform developed to standardize fragmented raw-material nomenclature across India's Central Public Sector Enterprises (CPSEs), enabling unified procurement and demand aggregation. Built an AI orchestration pipeline using local Llama 3.2 Vision models via Ollama to ingest, extract, normalize, and map thousands of material records into a unified master database.",
+    tags: [
+      "React 18",
+      "Vite",
+      "Tailwind CSS",
+      "Cloudflare Workers",
+      "Hono",
+      "Cloudflare D1",
+      "FastAPI",
+      "Ollama",
+      "Llama 3.2 Vision",
+    ],
+    githubLink: "https://github.com/coderaarav12/SIH2026",
+    highlight: "Smart India Hackathon 2026",
+    badge: "SIH '26",
     accent: "#ec4899",
+  },
+  {
+    title: "Trust OS",
+    subtitle: "AI Assessment & Interview Integrity Platform",
+    category: "AI Integrity & Vision / Hackathon",
+    period: "Hackathon (Aug 2026)",
+    description:
+      "An AI integrity verification platform that verifies whether a candidate genuinely completed an interview, assessment, coding challenge, or remote work session. Instead of relying on brittle AI classifiers, TrustOS combines browser telemetry signals, face and hand behavioral tracking, and multi-agent AI analysis into an Explainable Score backed by verifiable evidence.",
+    tags: ["Chrome Extension", "FastAPI", "Python", "Computer Vision", "Multi-Agent AI"],
+    githubLink: "https://github.com/coderaarav12/Hackathon-TrustOS",
+    highlight: "Multi-Agent Integrity Verification",
+    badge: "AI Platform",
+    accent: "#10b981",
+  },
+  {
+    title: "MediaHub",
+    subtitle: "Multi-Source Media Streaming Client",
+    category: "Full-Stack Web App",
+    period: "2026",
+    description:
+      "High-performance media streaming platform allowing users to search and stream movies, TV shows, and anime with multi-provider embed fallbacks, instant search indexing, and a sleek cinema dark-mode interface.",
+    tags: ["React 19", "Next.js", "Tailwind CSS", "Custom Embed APIs", "Responsive Video"],
+    githubLink: "https://github.com/coderaarav12/media-hub-frontend",
+    highlight: "Multi-Source Streaming",
+    badge: "Web App",
+    accent: "#f59e0b",
+  },
+  {
+    title: "SRM Sarthi Web",
+    subtitle: "Instant Campus Utility Portal",
+    category: "Campus Utility",
+    period: "2026",
+    description:
+      "Lightweight, mobile-first student utility web experience deployed on Vercel. Delivers instant access to verified university portals, campus links, bus schedules, and essential everyday student tools.",
+    tags: ["Next.js", "React", "Vercel Edge", "Tailwind CSS"],
+    githubLink: "https://github.com/coderaarav12/srm-sarthi-web",
+    highlight: "Vercel Edge Deployment",
+    badge: "Utility",
+    accent: "#6366f1",
   },
   {
     title: "Live GitHub Activity Heatmap",
     subtitle: "Real-Time Engineering Tracker",
     category: "Data Viz & Analytics",
+    period: "Live",
     description:
-      "Interactive contribution calendar and push graph. Inspect commits day by day, view real-time contribution velocity, and follow active coding streaks across 236+ contributions.",
+      "Self-hosted interactive contribution calendar, commit heatmap, and push velocity graph. Inspect commits day by day and follow real-time development velocity across 270+ contributions.",
     tags: ["Next.js", "SVG Graphing", "GitHub API", "Data Viz"],
-    link: "/activity",
-    isInternal: true,
-    highlight: "Live Activity Graph",
-    stats: "236+ Commits · Daily Inspection",
+    internalLink: "/activity",
+    highlight: "270+ Commits · Real-Time",
     badge: "Interactive",
-    accent: "#10b981",
-  },
-  {
-    title: "SRM Planner Backend",
-    subtitle: "Automated Academic Pipeline",
-    category: "Backend & Automation",
-    description:
-      "Python backend service built for timetable parsing, exam scheduling alerts, and automated student academic data ingestion pipelines.",
-    tags: ["Python", "FastAPI / Flask", "REST APIs", "Automation"],
-    link: "https://github.com/coderaarav12/SRMPlannerBackend--OLD",
-    highlight: "Python Microservice",
-    stats: "Automated Data Processing",
-    badge: "Backend",
-    accent: "#f59e0b",
+    accent: "#34d399",
   },
   {
     title: "App Tutorials & Knowledge Vault",
-    subtitle: "Curated Resource Library",
+    subtitle: "Curated Engineering Resource Library",
     category: "Developer Library",
+    period: "Active",
     description:
-      "Direct cloud repository of curated mobile and web development tutorials, architecture diagrams, study materials, and reference guides for developers.",
-    tags: ["Google Drive", "Resources", "Guides", "Cloud Storage"],
-    link: "https://drive.google.com/drive/folders/1gDYo3WZRP6ItngaANJCPS8Q8y2GMKLIN?usp=drive_link",
-    highlight: "Curated Guides & Assets",
-    stats: "Handpicked Study Vault",
+      "Centralized cloud repository containing curated mobile and web development tutorials, architecture diagrams, study materials, and reference guides for developers and students.",
+    tags: ["Google Drive", "Cloudflare Worker", "Developer Guides", "Curated Vault"],
+    internalLink: "/app_tutorials",
+    highlight: "Curated Study Vault",
     badge: "Resources",
-    accent: "#6366f1",
+    accent: "#a855f7",
   },
 ];
 
-const skillCategories = [
+const experiences = [
   {
-    title: "Frontend Engineering",
-    icon: "code",
-    color: "#8b5cf6",
-    skills: ["React 19", "Next.js (App Router)", "JavaScript (ESNext)", "TypeScript", "HTML5 & Semantic Web", "State Management", "Component Architecture"],
+    period: "Sep 2026 – Present",
+    role: "PR Team Member",
+    organization: "Directorate of Alumni Affairs (SRM)",
+    badge: "Public Relations",
+    points: [
+      "Assisted in planning and executing promotional and communication initiatives for university alumni events and activities.",
+      "Supported event coordination, publicity, and outreach efforts to strengthen alumni–student engagement across campus.",
+      "Created and coordinated digital content for event promotions, announcements, and institutional outreach campaigns.",
+    ],
   },
   {
-    title: "Styling & Interaction",
-    icon: "palette",
-    color: "#06b6d4",
-    skills: ["Tailwind CSS", "Modern CSS & Grid", "Glassmorphism", "Micro-interactions", "Responsive Layouts", "Accessibility (a11y)", "Figma Prototyping"],
+    period: "Sep 2026 – Present",
+    role: "Tech Web Development Team Member",
+    organization: "Entrepreneurship Cell SRM (E-Cell SRM)",
+    badge: "Web Development",
+    points: [
+      "Selected as a core member of the Tech & Web Development Team, contributing to the development and maintenance of E-Cell SRM's digital platforms.",
+      "Collaborating with the technical team on full-stack web development, UI improvements, and technology-driven entrepreneurship initiatives.",
+    ],
   },
   {
-    title: "Backend & Edge",
-    icon: "server",
-    color: "#ec4899",
-    skills: ["Cloudflare Workers", "Wrangler CLI", "Node.js", "Python", "RESTful APIs", "Vercel Edge Functions", "Database Integration"],
+    period: "May 2026 – Present",
+    role: "Design Manager",
+    organization: "Cherry+ Network",
+    badge: "Design Strategy",
+    points: [
+      "Leading design strategy and visual identity for Cherry+ Network, an interactive social platform for campus communities.",
+      "Managing end-to-end design workflows, coordinating with cross-functional development teams, and ensuring brand consistency across all digital touchpoints.",
+      "Mentoring junior design team members and driving cohesive user experiences from concept to shipping.",
+    ],
   },
   {
-    title: "Developer Tooling",
-    icon: "tools",
-    color: "#10b981",
-    skills: ["Git & GitHub Workflow", "VS Code", "Postman", "Linux / WSL", "Performance & CWV", "CI/CD Deployment", "FFmpeg & Media"],
+    period: "Oct 2025 – May 2026",
+    role: "Design Intern",
+    organization: "Cherry+ Network",
+    badge: "Internship",
+    points: [
+      "Worked closely with the design team to develop engaging visual content while maintaining strict consistency with organizational branding.",
+      "Contributed to promotional creatives, event content, and digital media assets across social platforms and web properties.",
+    ],
   },
 ];
 
-const timeline = [
+const educationList = [
   {
-    period: "2024 — 2028",
-    role: "B.Tech in Engineering (2nd Year)",
-    organization: "SRM Institute of Science and Technology (SRMIST KTR)",
+    degree: "Bachelor of Technology in Computer Science (CSE AI/ML)",
+    institution: "SRM Institute of Science and Technology (SRMIST KTR)",
     location: "Chennai, India",
-    description:
-      "Pursuing undergraduate degree in engineering. Actively architecting student-first applications, academic dashboards, and collaborating on modern web development.",
-    badge: "Education",
+    period: "2025 – 2029",
+    meta: "Currently in Semester 3 · Year-1 CGPA: 6.86",
+    badge: "Undergraduate",
   },
   {
-    period: "2024 — Present",
-    role: "Frontend Engineer & Vibe Coder",
-    organization: "Independent & Open Source",
-    location: "Remote",
-    description:
-      "Designing and shipping polished web applications like EduTechSRM, MediaHub, and SRM Sarthi. Specializing in fast edge rendering, sleek micro-interactions, and high-performance UI.",
-    badge: "Experience",
-  },
-  {
-    period: "2025 — 2026",
-    role: "Hackathon Builder & Prototyper",
-    organization: "Manipal Hackathon & Tech Meets",
+    degree: "Senior Secondary & High School (PCM & Engineering Graphics)",
+    institution: "Vedritam Group (DAV Group of Schools)",
     location: "India",
-    description:
-      "Created hardware/software solutions under high-pressure hackathon sprints, shipping functional prototypes, hardware integrations, and responsive frontend dashboards.",
-    badge: "Hackathons",
+    period: "2017 – 2025",
+    meta: "Class 10th: 91.2% | Class 12th: 71.2%",
+    badge: "Schooling",
+  },
+];
+
+const certifications = [
+  {
+    title: "AI Fundamentals",
+    issuer: "Google",
+    date: "May 2026",
+    credentialId: "8YPOZH4YAEMI",
+    accent: "#4285f4",
+  },
+  {
+    title: "Object Oriented Programming with C++",
+    issuer: "Microsoft (Coursera)",
+    date: "May 2026",
+    credentialId: "DIAVK96YVZDV",
+    accent: "#00a4ef",
+  },
+  {
+    title: "Python for Data Science, AI & Development",
+    issuer: "IBM",
+    date: "Dec 2025",
+    credentialId: "WGD2ICSMNBZS",
+    accent: "#054ada",
+  },
+  {
+    title: "The Fundamentals of RDMA Programming",
+    issuer: "NVIDIA",
+    date: "Jul 2025",
+    credentialId: "KN4PJG9RWP0H",
+    accent: "#76b900",
+  },
+  {
+    title: "ENDURO — Software Training & Personality Workshop",
+    issuer: "ENDURO in collab with IIT Hyderabad",
+    date: "Aug 2025",
+    credentialId: "EN251633",
+    accent: "#f59e0b",
+  },
+  {
+    title: "Programming with C++",
+    issuer: "Simplilearn",
+    date: "Jul 2025",
+    credentialId: "TQSK59BDIBQ4",
+    accent: "#10b981",
+  },
+  {
+    title: "AI for Beginners",
+    issuer: "HP LIFE",
+    date: "Jun 2025",
+    credentialId: "HP-LIFE-CERT",
+    accent: "#0096d6",
+  },
+];
+
+const technicalSkillGroups = [
+  {
+    category: "Languages",
+    color: "#8b5cf6",
+    skills: ["Python", "C++", "JavaScript", "TypeScript"],
+  },
+  {
+    category: "Web & Frontend",
+    color: "#06b6d4",
+    skills: [
+      "Next.js 16",
+      "React 19 / 18",
+      "Tailwind CSS",
+      "Framer Motion",
+      "Radix UI",
+      "Vite",
+      "HTML5",
+      "CSS3",
+    ],
+  },
+  {
+    category: "Backend & Cloud",
+    color: "#ec4899",
+    skills: [
+      "Cloudflare Workers",
+      "Hono",
+      "Cloudflare D1",
+      "FastAPI",
+      "Uvicorn",
+      "REST APIs",
+      "Web Scraping (Playwright)",
+    ],
+  },
+  {
+    category: "AI, ML & Data",
+    color: "#10b981",
+    skills: [
+      "Ollama",
+      "Llama 3.2",
+      "Llama 3.2 Vision",
+      "Pandas",
+      "NumPy",
+      "SciPy",
+      "Scikit-learn",
+    ],
+  },
+  {
+    category: "Dev Tools & Creative",
+    color: "#f59e0b",
+    skills: [
+      "Git",
+      "GitHub",
+      "Linux / WSL",
+      "Postman",
+      "Adobe Premiere Pro",
+      "After Effects",
+    ],
   },
 ];
 
@@ -158,7 +332,7 @@ const contacts = [
   },
   {
     label: "GitHub",
-    value: "@coderaarav12",
+    value: "coderaarav12",
     href: "https://github.com/coderaarav12",
     icon: "github",
     accent: "#8b5cf6",
@@ -166,85 +340,66 @@ const contacts = [
   {
     label: "LinkedIn",
     value: "in/aaravgoel12",
-    href: "https://www.linkedin.com/in/aaravgoel12/",
+    href: "https://linkedin.com/in/aaravgoel12",
     icon: "linkedin",
     accent: "#0a66c2",
   },
   {
-    label: "Live Domain",
+    label: "Portfolio",
     value: "goelaarav.dpdns.org",
-    href: "https://goelaarav.dpdns.org/",
+    href: "https://goelaarav.dpdns.org",
     icon: "globe",
     accent: "#10b981",
   },
 ];
 
+const interests = [
+  { label: "Video Editing", desc: "Premiere Pro & After Effects", icon: "🎬" },
+  { label: "Reading Novels", desc: "Sci-Fi, Tech & Literature", icon: "📚" },
+  { label: "Swimming", desc: "Endurance & Focus", icon: "🏊" },
+  { label: "Lawn Tennis", desc: "Agility & Precision", icon: "🎾" },
+];
+
 const Icons = {
   github: (
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
       <path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.31.76-1.61-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6.01 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.63-5.47 5.92.43.37.81 1.1.81 2.22 0 1.61-.01 2.9-.01 3.3 0 .32.22.7.83.58A12.02 12.02 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z" />
     </svg>
   ),
   linkedin: (
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
       <path d="M20.45 20.45h-3.56v-5.57c0-1.32-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" />
     </svg>
   ),
   globe: (
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
       <circle cx="12" cy="12" r="10" />
       <line x1="2" y1="12" x2="22" y2="12" />
       <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
     </svg>
   ),
   mail: (
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
       <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
       <polyline points="22,6 12,13 2,6" />
     </svg>
   ),
   phone: (
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
       <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />
-    </svg>
-  ),
-  code: (
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true">
-      <polyline points="16 18 22 12 16 6" />
-      <polyline points="8 6 2 12 8 18" />
-    </svg>
-  ),
-  palette: (
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-      <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
-      <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
-      <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />
-      <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
-      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.9 0 1.6-.7 1.6-1.6 0-.4-.2-.8-.5-1.1-.3-.3-.4-.7-.4-1.1 0-.9.7-1.6 1.6-1.6H16c3.3 0 6-2.7 6-6 0-5.5-4.5-9.6-10-9.6z" />
-    </svg>
-  ),
-  server: (
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-      <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
-      <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
-      <line x1="6" y1="6" x2="6.01" y2="6" />
-      <line x1="6" y1="18" x2="6.01" y2="18" />
-    </svg>
-  ),
-  tools: (
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-    </svg>
-  ),
-  sparkles: (
-    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-      <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3z" />
     </svg>
   ),
   arrowUpRight: (
     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
       <line x1="7" y1="17" x2="17" y2="7" />
       <polyline points="7 7 17 7 17 17" />
+    </svg>
+  ),
+  external: (
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true">
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+      <polyline points="15 3 21 3 21 9" />
+      <line x1="10" y1="14" x2="21" y2="3" />
     </svg>
   ),
 };
@@ -300,12 +455,6 @@ export default function Home() {
 
     const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
 
-    const updateScroll = () => {
-      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      const scrollProgress = clamp(window.scrollY / maxScroll, 0, 1);
-      scene.style.setProperty("--scroll-progress", scrollProgress.toFixed(4));
-    };
-
     const movePointer = (event) => {
       targetX = event.clientX / window.innerWidth;
       targetY = event.clientY / window.innerHeight;
@@ -331,34 +480,28 @@ export default function Home() {
       animationFrameId = requestAnimationFrame(animate);
     };
 
-    updateScroll();
     animate();
-
-    window.addEventListener("scroll", updateScroll, { passive: true });
     window.addEventListener("pointermove", movePointer);
-    window.addEventListener("resize", updateScroll);
 
     return () => {
       alive = false;
       cancelAnimationFrame(animationFrameId);
-      window.removeEventListener("scroll", updateScroll);
       window.removeEventListener("pointermove", movePointer);
-      window.removeEventListener("resize", updateScroll);
     };
   }, []);
 
   const filteredProjects =
     activeFilter === "all"
       ? projects
-      : activeFilter === "flagship"
-      ? projects.filter((p) => p.badge === "Flagship" || p.badge === "Featured")
-      : activeFilter === "apps"
-      ? projects.filter((p) => !p.badge.includes("Backend") && !p.badge.includes("Resources"))
-      : projects.filter((p) => p.badge.includes("Backend") || p.badge.includes("Resources") || p.isInternal);
+      : activeFilter === "ai"
+      ? projects.filter((p) => p.category.includes("AI") || p.badge.includes("Hackathon"))
+      : activeFilter === "web"
+      ? projects.filter((p) => p.category.includes("Full-Stack") || p.badge === "Flagship" || p.badge === "Web App")
+      : projects.filter((p) => p.badge.includes("Utility") || p.badge.includes("Resources") || p.internalLink);
 
   return (
     <div className="portfolio-root" ref={sceneRef}>
-      {/* Background ambient lighting */}
+      {/* Background ambient glowing orbs */}
       <div className="bg-glow-orb orb-1" aria-hidden="true" />
       <div className="bg-glow-orb orb-2" aria-hidden="true" />
       <div className="bg-glow-orb orb-3" aria-hidden="true" />
@@ -376,22 +519,24 @@ export default function Home() {
         </div>
       ) : null}
 
-      {/* Navigation Header */}
+      {/* Sticky Header Navigation (Clean, no /about) */}
       <header className={`portfolio-header ${navScrolled ? "header-scrolled" : ""}`}>
         <div className="header-container">
           <a href="#" className="brand-logo" aria-label="Aarav Goel Home">
             <span className="logo-badge">AG</span>
             <span className="logo-text">
               <strong>Aarav Goel</strong>
-              <small>Frontend Engineer</small>
+              <small>AI/ML @ SRMIST KTR</small>
             </span>
           </a>
 
           <nav className="desktop-nav" aria-label="Main Navigation">
             <a href="#about" className="nav-item">About</a>
             <a href="#projects" className="nav-item">Projects</a>
-            <a href="#skills" className="nav-item">Skills</a>
             <a href="#experience" className="nav-item">Experience</a>
+            <a href="#skills" className="nav-item">Skills</a>
+            <a href="#education" className="nav-item">Education</a>
+            <a href="#certifications" className="nav-item">Certs</a>
             <a href="/activity" className="nav-item nav-activity-pill">
               <span className="live-dot" aria-hidden="true" /> Activity
             </a>
@@ -399,8 +544,14 @@ export default function Home() {
           </nav>
 
           <div className="header-actions">
-            <a href="/about" className="btn-immersive" title="Explore the interactive audio/visual story">
-              <span>✦</span> Experience /about
+            <a
+              href="https://github.com/coderaarav12"
+              target="_blank"
+              rel="noreferrer"
+              className="btn-ghost"
+              aria-label="GitHub Profile"
+            >
+              {Icons.github}
             </a>
             <a href="#contact" className="btn-primary-sm">
               Let&apos;s Connect
@@ -417,45 +568,47 @@ export default function Home() {
             <div className="hero-details">
               <div className="status-pill">
                 <span className="pulsing-green-dot" aria-hidden="true" />
-                <span>Available for Projects &amp; Internships · 2nd Year @ SRMIST</span>
+                <span>AI/ML Undergraduate @ SRMIST KTR · Semester 3 · Open to Opportunities</span>
               </div>
 
               <h1 className="hero-main-title">
-                <span>CRAFTING FAST,</span>
-                <span className="gradient-text">VIBRANT WEB</span>
-                <span>EXPERIENCES.</span>
+                <span>AI/ML STUDENT &amp;</span>
+                <span className="gradient-text">FULL-STACK</span>
+                <span>ENGINEER.</span>
               </h1>
 
               <p className="hero-subtext">
-                I&apos;m <strong>Aarav Goel</strong> — a frontend engineer and vibe coder dedicated to building
-                lightning-fast, hyper-polished web apps with React, Next.js, and modern edge architecture.
+                I&apos;m <strong>Aarav Goel</strong> — a builder-oriented developer who enjoys solving practical
+                problems through technology. Experienced in building and deploying real-world applications with
+                Python, TypeScript, Next.js, APIs, automation, and cloud technologies.
               </p>
 
               <div className="hero-cta-group">
                 <a href="#projects" className="btn-primary">
                   Explore Projects <span aria-hidden="true">↓</span>
                 </a>
-                <a href="/about" className="btn-secondary">
-                  <span>✦</span> Immersive Story (/about)
+                <a href="#experience" className="btn-secondary">
+                  Experience &amp; Roles
                 </a>
                 <a
-                  href="https://github.com/coderaarav12"
+                  href="https://linkedin.com/in/aaravgoel12"
                   target="_blank"
                   rel="noreferrer"
                   className="btn-ghost"
-                  aria-label="GitHub Profile"
+                  aria-label="LinkedIn Profile"
                 >
-                  {Icons.github}
-                  <span>GitHub</span>
+                  {Icons.linkedin}
+                  <span>LinkedIn</span>
                 </a>
               </div>
 
               <div className="hero-quick-tags">
-                <span className="tag-chip">Next.js App Router</span>
-                <span className="tag-chip">React 19</span>
-                <span className="tag-chip">Tailwind CSS</span>
-                <span className="tag-chip">Cloudflare Edge</span>
-                <span className="tag-chip">Fluid Micro-Interactions</span>
+                <span className="tag-chip">Next.js 16</span>
+                <span className="tag-chip">FastAPI &amp; Python</span>
+                <span className="tag-chip">TypeScript</span>
+                <span className="tag-chip">Cloudflare Workers</span>
+                <span className="tag-chip">Llama 3.2 Vision / AI</span>
+                <span className="tag-chip">Web Automation</span>
               </div>
             </div>
 
@@ -474,18 +627,18 @@ export default function Home() {
                 </div>
 
                 <div className="floating-badge badge-top-right">
-                  <span className="badge-icon">⚡</span>
+                  <span className="badge-icon">🎓</span>
                   <div>
-                    <strong>2nd Year B.Tech</strong>
-                    <small>SRMIST KTR</small>
+                    <strong>B.Tech CSE AI/ML</strong>
+                    <small>SRMIST KTR · 2025–2029</small>
                   </div>
                 </div>
 
                 <div className="floating-badge badge-bottom-left">
                   <span className="badge-icon">🚀</span>
                   <div>
-                    <strong>236+ GitHub</strong>
-                    <small>Active Contributions</small>
+                    <strong>250+ Active Users</strong>
+                    <small>EdutechSRM Platform</small>
                   </div>
                 </div>
 
@@ -494,15 +647,15 @@ export default function Home() {
                     <span className="avatar-chip">AG</span>
                     <div>
                       <strong>Aarav Goel</strong>
-                      <p>@coderaarav12 · Frontend Specialist</p>
+                      <p>Aspiring AI Software Engineer</p>
                     </div>
                   </div>
                   <a
-                    href="https://www.linkedin.com/in/aaravgoel12/"
+                    href="https://linkedin.com/in/aaravgoel12"
                     target="_blank"
                     rel="noreferrer"
                     className="card-linkedin-btn"
-                    aria-label="LinkedIn"
+                    aria-label="LinkedIn Profile"
                   >
                     {Icons.linkedin}
                   </a>
@@ -512,116 +665,111 @@ export default function Home() {
           </div>
         </section>
 
-        {/* METRICS STRIP */}
+        {/* METRICS & CORE EXPERTISE STRIP */}
         <section className="metrics-strip" aria-label="Key highlights">
           <div className="metrics-container">
             <div className="metric-box">
-              <strong className="metric-number">2nd</strong>
-              <span className="metric-label">Year Engineer @ SRMIST KTR</span>
+              <strong className="metric-number">250+</strong>
+              <span className="metric-label">Active Users on EdutechSRM</span>
             </div>
             <div className="metric-box">
-              <strong className="metric-number">236+</strong>
+              <strong className="metric-number">3+</strong>
+              <span className="metric-label">Hackathon AI Platforms (SIH &amp; Manipal)</span>
+            </div>
+            <div className="metric-box">
+              <strong className="metric-number">7+</strong>
+              <span className="metric-label">Industry Certifications</span>
+            </div>
+            <div className="metric-box">
+              <strong className="metric-number">270+</strong>
               <span className="metric-label">GitHub Contributions</span>
-            </div>
-            <div className="metric-box">
-              <strong className="metric-number">13+</strong>
-              <span className="metric-label">Public Repos &amp; Web Tools</span>
-            </div>
-            <div className="metric-box">
-              <strong className="metric-number">100%</strong>
-              <span className="metric-label">Frontend &amp; UI/UX Focus</span>
             </div>
           </div>
         </section>
 
-        {/* ABOUT / PHILOSOPHY SPOTLIGHT */}
+        {/* CAREER SUMMARY / ABOUT ME */}
         <section className="about-spotlight-section" id="about">
           <div className="section-container">
             <div className="section-header-centered">
-              <p className="section-eyebrow">ABOUT ME</p>
+              <p className="section-eyebrow">CAREER SUMMARY</p>
               <h2 className="section-title">
-                Building for Students, Builders &amp; <span className="gradient-text">the Modern Web.</span>
+                Building Practical, <span className="gradient-text">Scalable Products.</span>
               </h2>
               <p className="section-desc">
-                I bridge the gap between engineering rigor and aesthetic delight. Here is how I think, build, and ship.
+                AI/ML undergraduate at SRMIST KTR with hands-on experience building and deploying
+                real-world full-stack applications, with a strong focus on Python, TypeScript, Next.js,
+                APIs, automation, and cloud technologies.
               </p>
             </div>
 
             <div className="philosophy-grid">
               <div className="philosophy-card">
                 <div className="card-top-icon" style={{ "--c": "#8b5cf6" }}>
-                  {Icons.code}
+                  <span style={{ fontSize: "1.4rem" }}>⚡</span>
                 </div>
-                <h3>High-Velocity Frontend</h3>
+                <h3>Full-Stack &amp; Cloud Deployment</h3>
                 <p>
-                  Specializing in Next.js, React 19, and Tailwind CSS. I prioritize snappy Core Web Vitals, accessible semantic HTML, zero layout shifts, and sleek glassmorphic interfaces.
+                  Architecting end-to-end applications using Next.js 16, React, Tailwind CSS, and
+                  serverless edge backends on Cloudflare Workers and Vercel. Focused on zero-credential
+                  token authentication, instant performance, and clean UI execution.
                 </p>
                 <div className="card-mini-tags">
-                  <span>SSR &amp; ISR</span>
-                  <span>Modern CSS</span>
-                  <span>Edge Routing</span>
+                  <span>Full-Stack</span>
+                  <span>Serverless</span>
+                  <span>Cloudflare</span>
+                  <span>Vercel</span>
                 </div>
               </div>
 
               <div className="philosophy-card">
                 <div className="card-top-icon" style={{ "--c": "#06b6d4" }}>
-                  {Icons.sparkles}
+                  <span style={{ fontSize: "1.4rem" }}>🧠</span>
                 </div>
-                <h3>Vibe Coding &amp; Flow State</h3>
+                <h3>AI &amp; Intelligent Automation</h3>
                 <p>
-                  Turning creative energy into living software. From micro-interactions to ambient backdrops and music integration, I treat every web page as an interactive digital art piece.
+                  Developing AI-driven solutions from multimodal material intelligence pipelines
+                  (Llama 3.2 Vision via Ollama for SIH 2026) to supply-chain early warning networks
+                  (Ripple at Manipal Hackathon) and explainable candidate verification (TrustOS).
                 </p>
                 <div className="card-mini-tags">
-                  <span>Fluid Motion</span>
-                  <span>Audio Sync</span>
-                  <span>Haptic Visuals</span>
+                  <span>Llama 3.2</span>
+                  <span>Ollama</span>
+                  <span>FastAPI</span>
+                  <span>Scikit-learn</span>
                 </div>
               </div>
 
               <div className="philosophy-card">
                 <div className="card-top-icon" style={{ "--c": "#ec4899" }}>
-                  {Icons.tools}
+                  <span style={{ fontSize: "1.4rem" }}>👥</span>
                 </div>
-                <h3>Real-World Campus Impact</h3>
+                <h3>Campus Leadership &amp; Design</h3>
                 <p>
-                  Built EduTechSRM and SRM Sarthi to solve actual friction points for thousands of university students — attendance tracking, timetable lookups, exam alerts, and smart AI chat.
+                  Active contributor across SRMIST campus organizations: Tech Web Development Team Member at
+                  E-Cell SRM, PR Team Member at Directorate of Alumni Affairs, and Design Manager
+                  at Cherry+ Network managing brand strategy and workflows.
                 </p>
                 <div className="card-mini-tags">
-                  <span>Student Tools</span>
-                  <span>AI Assistants</span>
-                  <span>Vercel / Cloudflare</span>
+                  <span>E-Cell SRM</span>
+                  <span>Alumni Affairs</span>
+                  <span>Cherry+ Network</span>
                 </div>
               </div>
-            </div>
-
-            {/* Immersive Audio/Visual teaser banner */}
-            <div className="about-immersive-banner">
-              <div className="banner-content">
-                <span className="banner-badge">✦ IMMERSIVE AUDIO / VISUAL EXPERIENCE</span>
-                <h3>Want to see the audio-reactive story?</h3>
-                <p>
-                  Check out the full <strong>/about</strong> experience featuring ambient background video,
-                  custom soundtrack player, tilt physics, and an interactive personal showcase.
-                </p>
-              </div>
-              <a href="/about" className="btn-banner-cta">
-                Launch /about Experience {Icons.arrowUpRight}
-              </a>
             </div>
           </div>
         </section>
 
-        {/* FEATURED PROJECTS SECTION */}
+        {/* FEATURED PROJECTS SHOWCASE */}
         <section className="projects-section" id="projects">
           <div className="section-container">
             <div className="section-header-flex">
               <div>
                 <p className="section-eyebrow">PORTFOLIO WORK</p>
                 <h2 className="section-title">
-                  Featured <span className="gradient-text">Creations.</span>
+                  Featured <span className="gradient-text">Projects.</span>
                 </h2>
                 <p className="section-desc">
-                  Selected open-source applications, student utilities, and interactive web tools.
+                  Real-world deployed web applications, AI platforms, and hackathon prototypes.
                 </p>
               </div>
 
@@ -632,28 +780,28 @@ export default function Home() {
                   className={`filter-btn ${activeFilter === "all" ? "active" : ""}`}
                   onClick={() => setActiveFilter("all")}
                 >
-                  All Projects
+                  All ({projects.length})
                 </button>
                 <button
                   type="button"
-                  className={`filter-btn ${activeFilter === "flagship" ? "active" : ""}`}
-                  onClick={() => setActiveFilter("flagship")}
+                  className={`filter-btn ${activeFilter === "ai" ? "active" : ""}`}
+                  onClick={() => setActiveFilter("ai")}
                 >
-                  Flagship
+                  AI &amp; Hackathons
                 </button>
                 <button
                   type="button"
-                  className={`filter-btn ${activeFilter === "apps" ? "active" : ""}`}
-                  onClick={() => setActiveFilter("apps")}
+                  className={`filter-btn ${activeFilter === "web" ? "active" : ""}`}
+                  onClick={() => setActiveFilter("web")}
                 >
-                  Web Apps
+                  Full-Stack Web
                 </button>
                 <button
                   type="button"
                   className={`filter-btn ${activeFilter === "tools" ? "active" : ""}`}
                   onClick={() => setActiveFilter("tools")}
                 >
-                  Tools &amp; Backend
+                  Tools &amp; Vault
                 </button>
               </div>
             </div>
@@ -665,7 +813,6 @@ export default function Home() {
                   className="project-showcase-card"
                   style={{ "--accent": project.accent }}
                 >
-                  <div className="card-glow-reflection" aria-hidden="true" />
                   <div className="card-top-bar">
                     <span className="category-label">{project.category}</span>
                     <span className="badge-pill">{project.badge}</span>
@@ -674,13 +821,35 @@ export default function Home() {
                   <div className="card-title-group">
                     <h3 className="project-title">{project.title}</h3>
                     <p className="project-subtitle">{project.subtitle}</p>
+                    {project.period ? (
+                      <span style={{ fontSize: "0.76rem", color: "rgba(246, 247, 251, 0.5)", marginTop: "2px", display: "block" }}>
+                        {project.period}
+                      </span>
+                    ) : null}
                   </div>
 
                   <p className="project-description">{project.description}</p>
 
+                  {project.demoInfo ? (
+                    <div
+                      style={{
+                        padding: "10px 14px",
+                        borderRadius: "10px",
+                        background: "rgba(139, 92, 246, 0.08)",
+                        border: "1px solid rgba(139, 92, 246, 0.25)",
+                        fontSize: "0.78rem",
+                        color: "#c4b5fd",
+                        marginBottom: "16px",
+                        fontFamily: "monospace",
+                      }}
+                    >
+                      {project.demoInfo}
+                    </div>
+                  ) : null}
+
                   <div className="project-highlight-box">
                     <span className="highlight-dot" aria-hidden="true" />
-                    <span>{project.stats}</span>
+                    <span>{project.highlight}</span>
                   </div>
 
                   <div className="project-tags-row">
@@ -692,15 +861,37 @@ export default function Home() {
                   </div>
 
                   <div className="card-footer-actions">
-                    <a
-                      href={project.link}
-                      target={project.isInternal ? undefined : "_blank"}
-                      rel={project.isInternal ? undefined : "noreferrer"}
-                      className="project-action-link"
-                    >
-                      <span>{project.isInternal ? "Open Experience" : "View on GitHub"}</span>
-                      {Icons.arrowUpRight}
-                    </a>
+                    <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
+                      {project.liveLink ? (
+                        <a
+                          href={project.liveLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="btn-primary-sm"
+                          style={{ textDecoration: "none", fontSize: "0.78rem" }}
+                        >
+                          Visit Live App {Icons.external}
+                        </a>
+                      ) : null}
+                      {project.githubLink ? (
+                        <a
+                          href={project.githubLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="project-action-link"
+                        >
+                          {Icons.github}
+                          <span>Source Code</span>
+                          {Icons.arrowUpRight}
+                        </a>
+                      ) : null}
+                      {project.internalLink ? (
+                        <a href={project.internalLink} className="project-action-link">
+                          <span>Open Resource</span>
+                          {Icons.arrowUpRight}
+                        </a>
+                      ) : null}
+                    </div>
                   </div>
                 </article>
               ))}
@@ -708,30 +899,75 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SKILLS & TECHNICAL ARSENAL */}
-        <section className="skills-section" id="skills">
+        {/* ACADEMIC & LEADERSHIP EXPERIENCE */}
+        <section className="timeline-section" id="experience">
           <div className="section-container">
             <div className="section-header-centered">
-              <p className="section-eyebrow">TECH STACK</p>
+              <p className="section-eyebrow">LEADERSHIP &amp; ROLES</p>
               <h2 className="section-title">
-                Engineering <span className="gradient-text">Toolkit.</span>
+                Academic &amp; Professional <span className="gradient-text">Experience.</span>
               </h2>
               <p className="section-desc">
-                Technologies and tools I use to build scalable, responsive, and delightful web apps.
+                Active campus roles, organizational responsibilities, and design leadership.
               </p>
             </div>
 
-            <div className="skills-category-grid">
-              {skillCategories.map((cat) => (
-                <div key={cat.title} className="skill-category-card" style={{ "--cat-color": cat.color }}>
+            <div className="timeline-list">
+              {experiences.map((exp, index) => (
+                <div key={exp.role + exp.organization} className="timeline-item" style={{ "--i": index }}>
+                  <div className="timeline-marker">
+                    <span className="marker-dot" />
+                    <span className="marker-line" />
+                  </div>
+                  <div className="timeline-content-card">
+                    <div className="timeline-card-header">
+                      <span className="timeline-period">{exp.period}</span>
+                      <span className="timeline-badge">{exp.badge}</span>
+                    </div>
+                    <h3 className="timeline-role">{exp.role}</h3>
+                    <div className="timeline-org-row">
+                      <strong>{exp.organization}</strong>
+                    </div>
+                    <ul style={{ margin: "12px 0 0", paddingLeft: "18px", color: "var(--text-muted)", fontSize: "0.92rem", lineHeight: "1.7" }}>
+                      {exp.points.map((pt, i) => (
+                        <li key={i} style={{ marginBottom: "6px" }}>
+                          {pt}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* TECHNICAL SKILLS ARSENAL */}
+        <section className="skills-section" id="skills">
+          <div className="section-container">
+            <div className="section-header-centered">
+              <p className="section-eyebrow">EXPERTISE &amp; STACK</p>
+              <h2 className="section-title">
+                Technical <span className="gradient-text">Skills.</span>
+              </h2>
+              <p className="section-desc">
+                Core technologies, frameworks, and developer tools across full-stack and AI development.
+              </p>
+            </div>
+
+            <div className="skills-category-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
+              {technicalSkillGroups.map((group) => (
+                <div key={group.category} className="skill-category-card" style={{ "--cat-color": group.color }}>
                   <div className="category-header">
-                    <div className="category-icon-box">{Icons[cat.icon]}</div>
-                    <h3>{cat.title}</h3>
+                    <div className="category-icon-box" style={{ background: `${group.color}15`, color: group.color, border: `1px solid ${group.color}35` }}>
+                      <span>✦</span>
+                    </div>
+                    <h3 style={{ fontSize: "1rem" }}>{group.category}</h3>
                   </div>
                   <div className="skill-items-list">
-                    {cat.skills.map((skill) => (
+                    {group.skills.map((skill) => (
                       <div key={skill} className="skill-pill">
-                        <span className="skill-bullet" aria-hidden="true" />
+                        <span className="skill-bullet" aria-hidden="true" style={{ background: group.color }} />
                         <span>{skill}</span>
                       </div>
                     ))}
@@ -742,39 +978,120 @@ export default function Home() {
           </div>
         </section>
 
-        {/* EXPERIENCE & EDUCATION TIMELINE */}
-        <section className="timeline-section" id="experience">
+        {/* EDUCATION SECTION */}
+        <section className="education-section" id="education" style={{ padding: "60px 0" }}>
           <div className="section-container">
             <div className="section-header-centered">
-              <p className="section-eyebrow">JOURNEY</p>
+              <p className="section-eyebrow">ACADEMIC BACKGROUND</p>
               <h2 className="section-title">
-                Experience &amp; <span className="gradient-text">Education.</span>
+                Education &amp; <span className="gradient-text">Qualifications.</span>
+              </h2>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px", maxWidth: "960px", margin: "0 auto" }}>
+              {educationList.map((edu) => (
+                <div
+                  key={edu.institution}
+                  style={{
+                    padding: "32px 28px",
+                    borderRadius: "24px",
+                    background: "linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02))",
+                    border: "1px solid var(--border-subtle)",
+                    backdropFilter: "blur(14px)",
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
+                    <span style={{ fontSize: "0.78rem", fontWeight: 700, color: "var(--primary)", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                      {edu.period}
+                    </span>
+                    <span className="timeline-badge">{edu.badge}</span>
+                  </div>
+                  <h3 style={{ margin: "0 0 8px", fontSize: "1.2rem", fontWeight: 800 }}>{edu.degree}</h3>
+                  <p style={{ margin: "0 0 12px", color: "rgba(246, 247, 251, 0.8)", fontWeight: 600, fontSize: "0.95rem" }}>
+                    {edu.institution}
+                  </p>
+                  <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-dim)" }}>
+                    {edu.meta}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CERTIFICATIONS SECTION */}
+        <section className="certifications-section" id="certifications" style={{ padding: "60px 0" }}>
+          <div className="section-container">
+            <div className="section-header-centered">
+              <p className="section-eyebrow">CREDENTIALS</p>
+              <h2 className="section-title">
+                Certifications &amp; <span className="gradient-text">Workshops.</span>
               </h2>
               <p className="section-desc">
-                My academic and software development milestones.
+                Verified training and certifications in AI, C++, Python, and High-Performance Systems.
               </p>
             </div>
 
-            <div className="timeline-list">
-              {timeline.map((item, index) => (
-                <div key={item.role} className="timeline-item" style={{ "--i": index }}>
-                  <div className="timeline-marker">
-                    <span className="marker-dot" />
-                    <span className="marker-line" />
-                  </div>
-                  <div className="timeline-content-card">
-                    <div className="timeline-card-header">
-                      <span className="timeline-period">{item.period}</span>
-                      <span className="timeline-badge">{item.badge}</span>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "18px" }}>
+              {certifications.map((cert) => (
+                <div
+                  key={cert.title + cert.issuer}
+                  style={{
+                    padding: "24px",
+                    borderRadius: "20px",
+                    background: "rgba(255, 255, 255, 0.03)",
+                    border: "1px solid var(--border-subtle)",
+                    backdropFilter: "blur(12px)",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+                      <span style={{ fontSize: "0.74rem", fontWeight: 700, color: cert.accent, textTransform: "uppercase", letterSpacing: "0.1em" }}>
+                        {cert.issuer}
+                      </span>
+                      <span style={{ fontSize: "0.72rem", color: "var(--text-dim)" }}>{cert.date}</span>
                     </div>
-                    <h3 className="timeline-role">{item.role}</h3>
-                    <div className="timeline-org-row">
-                      <strong>{item.organization}</strong>
-                      <span className="org-bullet">·</span>
-                      <span>{item.location}</span>
-                    </div>
-                    <p className="timeline-description">{item.description}</p>
+                    <h3 style={{ margin: "0 0 12px", fontSize: "1.05rem", fontWeight: 700 }}>{cert.title}</h3>
                   </div>
+                  {cert.credentialId ? (
+                    <div style={{ fontSize: "0.72rem", color: "var(--text-dim)", fontFamily: "monospace", paddingTop: "12px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                      Credential ID: {cert.credentialId}
+                    </div>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* INTERESTS SECTION */}
+        <section className="interests-section" style={{ padding: "40px 0 80px" }}>
+          <div className="section-container">
+            <div className="section-header-centered">
+              <p className="section-eyebrow">BEYOND CODING</p>
+              <h2 className="section-title">
+                Personal <span className="gradient-text">Interests.</span>
+              </h2>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "18px", maxWidth: "1000px", margin: "0 auto" }}>
+              {interests.map((item) => (
+                <div
+                  key={item.label}
+                  style={{
+                    padding: "24px",
+                    borderRadius: "20px",
+                    background: "rgba(255, 255, 255, 0.025)",
+                    border: "1px solid var(--border-subtle)",
+                    textAlign: "center",
+                  }}
+                >
+                  <div style={{ fontSize: "2rem", marginBottom: "10px" }}>{item.icon}</div>
+                  <h3 style={{ margin: "0 0 4px", fontSize: "1.05rem", fontWeight: 700 }}>{item.label}</h3>
+                  <p style={{ margin: 0, fontSize: "0.82rem", color: "var(--text-dim)" }}>{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -786,15 +1103,15 @@ export default function Home() {
           <div className="section-container">
             <div className="activity-card-container">
               <div className="activity-text">
-                <span className="callout-pill">LIVE ANALYTICS</span>
-                <h2>236+ GitHub Contributions in 2026</h2>
+                <span className="callout-pill">LIVE HEATMAP &amp; METRICS</span>
+                <h2>270+ GitHub Contributions &amp; Active Streaks</h2>
                 <p>
-                  Curious to see my real-time commit heatmaps, contribution streaks, and push timelines?
-                  I built a custom interactive activity viewer powered by GitHub data snapshots.
+                  Explore my interactive contribution calendar, push velocity, and commit history across
+                  all repositories. Powered by real-time snapshot data.
                 </p>
                 <div className="activity-actions">
                   <a href="/activity" className="btn-primary">
-                    View Live Activity Heatmap {Icons.arrowUpRight}
+                    View Live Heatmap {Icons.arrowUpRight}
                   </a>
                   <a
                     href="https://github.com/coderaarav12"
@@ -838,7 +1155,7 @@ export default function Home() {
                 </div>
                 <div className="graphic-badge">
                   <span>Consistent Builder</span>
-                  <strong>Active Daily Streaks</strong>
+                  <strong>Active Engineering Streaks</strong>
                 </div>
               </div>
             </div>
@@ -854,7 +1171,7 @@ export default function Home() {
                 Let&apos;s Build Something <span className="gradient-text">Exceptional.</span>
               </h2>
               <p className="section-desc">
-                Have a project, internship opportunity, or question? Feel free to reach out anytime.
+                Have an AI project, internship opportunity, or question? Feel free to reach out anytime.
               </p>
             </div>
 
@@ -893,14 +1210,14 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Quick Email Composer Trigger */}
+            {/* Direct Email Composer Trigger */}
             <div className="direct-email-banner">
               <div className="banner-left">
-                <h3>Prefer a direct email?</h3>
-                <p>Click below to open your favorite email client with a pre-filled subject line.</p>
+                <h3>Looking for an AI / Full-Stack Engineer?</h3>
+                <p>Feel free to shoot me an email directly. I respond quickly.</p>
               </div>
               <a
-                href="mailto:goelaarav290@gmail.com?subject=Hello%20Aarav%20-%20Portfolio%20Inquiry"
+                href="mailto:goelaarav290@gmail.com?subject=Hello%20Aarav%20-%20Opportunity%20Inquiry"
                 className="btn-primary"
               >
                 Send Direct Email →
@@ -910,22 +1227,23 @@ export default function Home() {
         </section>
       </main>
 
-      {/* FOOTER */}
+      {/* FOOTER (Clean, no /about) */}
       <footer className="portfolio-footer">
         <div className="footer-container">
           <div className="footer-top">
             <div className="footer-brand">
               <span className="brand-tag">AARAV GOEL</span>
-              <p>Frontend Engineer · Vibe Coder · 2nd Year Student @ SRMIST KTR</p>
+              <p>AI/ML Undergraduate @ SRMIST KTR · Aspiring AI Software Engineer</p>
             </div>
 
             <div className="footer-links-group">
               <a href="#about">About</a>
               <a href="#projects">Projects</a>
-              <a href="#skills">Skills</a>
               <a href="#experience">Experience</a>
-              <a href="/about">/about story</a>
-              <a href="/activity">Live Heatmap</a>
+              <a href="#skills">Skills</a>
+              <a href="#education">Education</a>
+              <a href="#certifications">Certifications</a>
+              <a href="/activity">Activity Heatmap</a>
               <a href="/app_tutorials">Tutorials Hub</a>
             </div>
           </div>

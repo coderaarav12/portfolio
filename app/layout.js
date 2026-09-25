@@ -1,9 +1,9 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Aarav Goel | Frontend Engineer & Vibe Coder",
+  title: "Aarav Goel | AI/ML Student @ SRMIST KTR & Full-Stack AI Engineer",
   description:
-    "Portfolio of Aarav Goel — 2nd year engineering student at SRMIST KTR, frontend developer, and builder of EduTechSRM, MediaHub, and SRM Sarthi.",
+    "Portfolio of Aarav Goel — AI/ML undergraduate at SRMIST KTR building practical full-stack applications and AI systems including EdutechSRM, Ripple, SyncMasters, and TrustOS.",
   icons: {
     icon: "/aarav-photo.png",
     shortcut: "/aarav-photo.png",
