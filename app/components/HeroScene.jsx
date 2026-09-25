@@ -10,275 +10,152 @@ export default function HeroScene() {
     const container = containerRef.current;
     if (!container) return;
 
-    // Check prefers-reduced-motion
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
+    let width = container.clientWidth || 400;
+    let height = container.clientHeight || 400;
 
-    // Dimensions
-    let width = container.clientWidth;
-    let height = container.clientHeight;
-
-    // Scene, Camera, Renderer
+    // Scene
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x06070a, 0.04);
 
-    const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
-    camera.position.set(0, 0, 14);
+    // Camera
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+    camera.position.set(0, 0, 7.5);
 
+    // Renderer
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
       antialias: true,
-      powerPreference: "high-performance",
+      powerPreference: "high-performance"
     });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
+    renderer.toneMappingExposure = 1.2;
     container.appendChild(renderer.domElement);
 
-    // 1. Central Core: Glowing Wireframe Polyhedron
-    const coreGroup = new THREE.Group();
-    scene.add(coreGroup);
+    // Lighting (Cinematic Studio Lights)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambientLight);
 
-    const innerGeo = new THREE.IcosahedronGeometry(2.2, 2);
+    const lightCyan = new THREE.PointLight(0x38bdf8, 25, 20);
+    lightCyan.position.set(4, 3, 5);
+    scene.add(lightCyan);
+
+    const lightViolet = new THREE.PointLight(0x818cf8, 20, 20);
+    lightViolet.position.set(-4, -2, 4);
+    scene.add(lightViolet);
+
+    const lightEmerald = new THREE.PointLight(0x34d399, 15, 20);
+    lightEmerald.position.set(0, -4, 3);
+    scene.add(lightEmerald);
+
+    // Main 3D Artifact: Smooth Glass Torus Knot
+    const geometry = new THREE.TorusKnotGeometry(1.6, 0.45, 128, 32);
+
+    const material = new THREE.MeshPhysicalMaterial({
+      color: 0x0f172a,
+      emissive: 0x070b14,
+      roughness: 0.15,
+      metalness: 0.1,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.1,
+      transmission: 0.65, // Refractive glass aesthetic
+      ior: 1.5,
+      transparent: true,
+      opacity: 0.95
+    });
+
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    // Inner Luminous Wireframe Skeleton for high-tech aesthetic
+    const innerGeo = new THREE.TorusKnotGeometry(1.58, 0.43, 64, 16);
     const innerMat = new THREE.MeshBasicMaterial({
       color: 0x38bdf8,
       wireframe: true,
       transparent: true,
-      opacity: 0.35,
+      opacity: 0.25
     });
     const innerMesh = new THREE.Mesh(innerGeo, innerMat);
-    coreGroup.add(innerMesh);
+    scene.add(innerMesh);
 
-    // Central luminous nucleus
-    const nucleusGeo = new THREE.SphereGeometry(0.8, 24, 24);
-    const nucleusMat = new THREE.MeshBasicMaterial({
-      color: 0x818cf8,
-      transparent: true,
-      opacity: 0.7,
-    });
-    const nucleus = new THREE.Mesh(nucleusGeo, nucleusMat);
-    coreGroup.add(nucleus);
-
-    // Core point constellation
-    const corePointsGeo = new THREE.IcosahedronGeometry(2.35, 3);
-    const corePointsMat = new THREE.PointsMaterial({
-      color: 0x34d399,
-      size: 0.06,
-      transparent: true,
-      opacity: 0.8,
-    });
-    const corePoints = new THREE.Points(corePointsGeo, corePointsMat);
-    coreGroup.add(corePoints);
-
-    // 2. Orbital Rings & System Nodes
-    const ringsGroup = new THREE.Group();
-    scene.add(ringsGroup);
-
-    const ringCount = 3;
-    const ringRadii = [4.2, 5.8, 7.4];
-    const ringTilts = [
-      { x: 0.6, y: 0.2, z: 0.1 },
-      { x: -0.4, y: 0.8, z: -0.3 },
-      { x: 0.2, y: -0.5, z: 0.9 },
-    ];
-
-    const nodesData = [
-      { label: "AI / ML", radius: 4.2, speed: 0.008, angle: 0, color: 0x38bdf8 },
-      { label: "SYSTEMS", radius: 4.2, speed: 0.008, angle: Math.PI, color: 0x818cf8 },
-      { label: "PRODUCTS", radius: 5.8, speed: -0.006, angle: 0.8, color: 0x34d399 },
-      { label: "VISION", radius: 5.8, speed: -0.006, angle: 3.9, color: 0x38bdf8 },
-      { label: "EXPERIMENTS", radius: 7.4, speed: 0.004, angle: 1.5, color: 0xfbbf24 },
-      { label: "OPEN SOURCE", radius: 7.4, speed: 0.004, angle: 4.6, color: 0xa78bfa },
-    ];
-
-    // Create thin vector ring tracks
-    ringRadii.forEach((radius, i) => {
-      const ringCurve = new THREE.EllipseCurve(
-        0, 0, radius, radius, 0, 2 * Math.PI, false, 0
-      );
-      const ringPoints = ringCurve.getPoints(120);
-      const ringGeo = new THREE.BufferGeometry().setFromPoints(ringPoints);
-      const ringMat = new THREE.LineBasicMaterial({
-        color: 0xffffff,
-        transparent: true,
-        opacity: 0.08,
-      });
-      const ringLine = new THREE.Line(ringGeo, ringMat);
-      ringLine.rotation.set(ringTilts[i].x, ringTilts[i].y, ringTilts[i].z);
-      ringsGroup.add(ringLine);
-    });
-
-    // Create node objects
-    const nodeMeshes = nodesData.map((node) => {
-      const nodeObj = new THREE.Group();
-
-      const sphereGeo = new THREE.SphereGeometry(0.18, 16, 16);
-      const sphereMat = new THREE.MeshBasicMaterial({
-        color: node.color,
-      });
-      const sphereMesh = new THREE.Mesh(sphereGeo, sphereMat);
-      nodeObj.add(sphereMesh);
-
-      // Node subtle halo
-      const haloGeo = new THREE.RingGeometry(0.24, 0.28, 24);
-      const haloMat = new THREE.MeshBasicMaterial({
-        color: node.color,
-        side: THREE.DoubleSide,
-        transparent: true,
-        opacity: 0.4,
-      });
-      const haloMesh = new THREE.Mesh(haloGeo, haloMat);
-      nodeObj.add(haloMesh);
-
-      ringsGroup.add(nodeObj);
-      return { ...node, obj: nodeObj };
-    });
-
-    // Connecting laser line between Core and Nodes
-    const lineMat = new THREE.LineBasicMaterial({
-      color: 0x38bdf8,
-      transparent: true,
-      opacity: 0.15,
-    });
-    const connectorGeo = new THREE.BufferGeometry();
-    const connectorPositions = new Float32Array(nodesData.length * 6);
-    connectorGeo.setAttribute(
-      "position",
-      new THREE.BufferAttribute(connectorPositions, 3)
-    );
-    const connectorLines = new THREE.LineSegments(connectorGeo, lineMat);
-    scene.add(connectorLines);
-
-    // 3. Ambient Star / Data Field
-    const particleCount = 280;
+    // Clean, subtle floating data dust particles
+    const particleCount = 120;
     const particleGeo = new THREE.BufferGeometry();
-    const particlePositions = new Float32Array(particleCount * 3);
+    const particlePos = new Float32Array(particleCount * 3);
 
     for (let i = 0; i < particleCount * 3; i += 3) {
-      particlePositions[i] = (Math.random() - 0.5) * 36;
-      particlePositions[i + 1] = (Math.random() - 0.5) * 28;
-      particlePositions[i + 2] = (Math.random() - 0.5) * 25;
+      particlePos[i] = (Math.random() - 0.5) * 14;
+      particlePos[i + 1] = (Math.random() - 0.5) * 12;
+      particlePos[i + 2] = (Math.random() - 0.5) * 10;
     }
-
-    particleGeo.setAttribute(
-      "position",
-      new THREE.BufferAttribute(particlePositions, 3)
-    );
+    particleGeo.setAttribute("position", new THREE.BufferAttribute(particlePos, 3));
 
     const particleMat = new THREE.PointsMaterial({
       color: 0x94a3b8,
-      size: 0.05,
+      size: 0.04,
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.4
     });
-
     const particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
 
-    // Mouse Parallax
-    let targetMouseX = 0;
-    let targetMouseY = 0;
-    let currentMouseX = 0;
-    let currentMouseY = 0;
+    // Mouse Interaction
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
 
-    const handleMouseMove = (e) => {
-      targetMouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-      targetMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    const onMouseMove = (e) => {
+      const rect = container.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+      const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+      targetX = x;
+      targetY = y;
     };
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
 
-    // Scroll Integration (Flight into the Core)
-    let scrollY = 0;
-    const handleScroll = () => {
-      scrollY = window.scrollY;
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    // Resize Handler
-    const handleResize = () => {
+    // Resize
+    const onResize = () => {
       if (!container) return;
-      width = container.clientWidth;
-      height = container.clientHeight;
+      width = container.clientWidth || 400;
+      height = container.clientHeight || 400;
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
     };
-    window.addEventListener("resize", handleResize);
-
-    // Visibility Observer to pause when scrolled far out of view
-    let isVisible = true;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        isVisible = entry.isIntersecting;
-      },
-      { threshold: 0.05 }
-    );
-    observer.observe(container);
+    window.addEventListener("resize", onResize);
 
     // Animation Loop
-    let animationFrameId;
+    let animId;
     let clock = new THREE.Clock();
 
     const animate = () => {
-      animationFrameId = requestAnimationFrame(animate);
-
-      if (!isVisible) return;
+      animId = requestAnimationFrame(animate);
 
       const elapsedTime = clock.getElapsedTime();
 
-      // Smooth mouse damping
-      currentMouseX += (targetMouseX - currentMouseX) * 0.05;
-      currentMouseY += (targetMouseY - currentMouseY) * 0.05;
+      // Smooth mouse interpolation
+      currentX += (targetX - currentX) * 0.05;
+      currentY += (targetY - currentY) * 0.05;
 
-      // Scroll depth translation: Camera zooms toward core on initial scroll
-      const scrollFactor = Math.min(scrollY / 700, 1.8);
-      const targetCamZ = 14 - scrollFactor * 6.5;
-      camera.position.z += (targetCamZ - camera.position.z) * 0.08;
+      // Gentle floating levitation
+      const floatY = Math.sin(elapsedTime * 1.5) * 0.15;
+      mesh.position.y = floatY;
+      innerMesh.position.y = floatY;
 
-      camera.position.x = currentMouseX * 1.4;
-      camera.position.y = -currentMouseY * 1.4;
-      camera.lookAt(0, 0, 0);
+      // Smooth slow rotation + mouse tilt
+      mesh.rotation.x = elapsedTime * 0.3 + currentY * 0.6;
+      mesh.rotation.y = elapsedTime * 0.4 + currentX * 0.8;
 
-      if (!prefersReducedMotion) {
-        // Rotate Core
-        coreGroup.rotation.y = elapsedTime * 0.25;
-        coreGroup.rotation.x = Math.sin(elapsedTime * 0.2) * 0.15;
+      innerMesh.rotation.x = mesh.rotation.x;
+      innerMesh.rotation.y = mesh.rotation.y;
 
-        // Core Breathing scale
-        const pulse = 1 + Math.sin(elapsedTime * 2) * 0.04;
-        innerMesh.scale.set(pulse, pulse, pulse);
-        nucleus.scale.set(pulse * 1.05, pulse * 1.05, pulse * 1.05);
+      // Move lights slightly with mouse
+      lightCyan.position.x = 4 + currentX * 2;
+      lightCyan.position.y = 3 - currentY * 2;
 
-        // Orbit Nodes
-        const positions = connectorGeo.attributes.position.array;
-        nodeMeshes.forEach((node, idx) => {
-          node.angle += node.speed;
-          const x = Math.cos(node.angle) * node.radius;
-          const y = Math.sin(node.angle) * (node.radius * 0.65);
-          const z = Math.sin(node.angle * 2) * 0.8;
-
-          node.obj.position.set(x, y, z);
-          node.obj.lookAt(camera.position);
-
-          // Update connector line coordinates
-          const i6 = idx * 6;
-          // Point 1: core center
-          positions[i6] = 0;
-          positions[i6 + 1] = 0;
-          positions[i6 + 2] = 0;
-          // Point 2: node position
-          positions[i6 + 3] = x;
-          positions[i6 + 4] = y;
-          positions[i6 + 5] = z;
-        });
-        connectorGeo.attributes.position.needsUpdate = true;
-
-        // Slowly drift particles
-        particles.rotation.y = elapsedTime * 0.02;
-        particles.rotation.x = elapsedTime * 0.01;
-      }
+      // Rotate subtle particles
+      particles.rotation.y = elapsedTime * 0.03;
 
       renderer.render(scene, camera);
     };
@@ -286,21 +163,14 @@ export default function HeroScene() {
     animate();
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
-      observer.disconnect();
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleResize);
+      cancelAnimationFrame(animId);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("resize", onResize);
 
-      // Clean GPU resources
+      geometry.dispose();
+      material.dispose();
       innerGeo.dispose();
       innerMat.dispose();
-      nucleusGeo.dispose();
-      nucleusMat.dispose();
-      corePointsGeo.dispose();
-      corePointsMat.dispose();
-      connectorGeo.dispose();
-      lineMat.dispose();
       particleGeo.dispose();
       particleMat.dispose();
       renderer.dispose();
@@ -315,12 +185,14 @@ export default function HeroScene() {
     <div
       ref={containerRef}
       style={{
-        position: "absolute",
-        inset: 0,
         width: "100%",
         height: "100%",
-        pointerEvents: "none",
-        zIndex: 1,
+        minHeight: "420px",
+        position: "relative",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        cursor: "grab"
       }}
     />
   );

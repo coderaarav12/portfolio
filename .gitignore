@@ -3,3 +3,4 @@ out/
 node_modules/
 .wrangler/
 public/about-montage.mp4
+screenshots/

@@ -8,43 +8,46 @@ import {
   Layers,
   ArrowRight,
   Sparkles,
-  Milestone
+  Milestone,
+  CheckCircle2,
+  Calendar,
+  Building
 } from "lucide-react";
 
 export default function RoadmapSpine() {
-  const roadmapStages = [
+  const milestones = [
     {
       stage: "01",
       code: "ORIGIN",
-      title: "Foundations & Curiosity",
+      title: "Foundations & Mathematical Rigor",
       institution: "Vedritam Group DAV School",
       period: "Class 10th (91.2%) • Class 12th (71.2%)",
-      summary:
-        "Where the transition from consuming technology to writing code began. Built initial algorithmic foundations in mathematics, structured programming, and analytical problem-solving.",
       tag: "CBSE Senior Secondary",
-      tagColor: "#94a3b8"
+      tagColor: "#38bdf8",
+      summary:
+        "Where the journey began. Built initial algorithmic foundations in mathematics, structured logic, and C++ fundamentals, sparking an ambition to build production software rather than just studying theory."
     },
     {
       stage: "02",
       code: "ACCELERATION",
-      title: "University & Core AI/ML",
+      title: "Undergraduate AI/ML Engineering",
       institution: "SRM Institute of Science and Technology (KTR)",
-      period: "2025 – 2029 • Semester 3 Active (Year 1 CGPA: 6.86)",
-      summary:
-        "Specializing in Computer Science and Engineering with artificial intelligence and machine learning. Focusing on production engineering, distributed systems, and real-world system architecture.",
+      period: "2025 – 2029 • Semester 3 Active • Year 1 CGPA: 6.86",
       tag: "B.Tech CSE (AI / ML)",
-      tagColor: "#38bdf8"
+      tagColor: "#818cf8",
+      summary:
+        "Specializing in Computer Science & Engineering with Artificial Intelligence and Machine Learning. Focused on applied deep learning, distributed cloud edge systems, and building practical products."
     },
     {
       stage: "02.5",
-      code: "CAMPUS IMPACT",
-      title: "Leadership & Digital Infrastructure",
+      code: "CAMPUS LEADERSHIP",
+      title: "University Media & Technical Direction",
       institution: "Directorate of Alumni Affairs & E-Cell SRM",
       period: "2025 – Present",
+      tag: "Institutional Leadership",
+      tagColor: "#34d399",
       summary:
-        "Spearheading digital engagement and media campaigns for 50,000+ global alumni at the Directorate of Alumni Affairs. Building hackathon and startup portals on the E-Cell SRM technical web dev team.",
-      tag: "University Leadership",
-      tagColor: "#34d399"
+        "Spearheading digital engagement and media campaigns for 50,000+ global alumni at the Directorate of Alumni Affairs. Building hackathon platforms and entrepreneurship portals for E-Cell SRM."
     }
   ];
 
@@ -52,7 +55,7 @@ export default function RoadmapSpine() {
     <section className="roadmap-spine-section" style={{ padding: "100px 24px 60px 24px", position: "relative" }}>
       <div style={{ maxWidth: "1140px", margin: "0 auto", position: "relative", zIndex: 1 }}>
         {/* Header */}
-        <div style={{ marginBottom: "40px" }}>
+        <div style={{ marginBottom: "48px" }}>
           <span
             style={{
               fontSize: "0.75rem",
@@ -68,7 +71,7 @@ export default function RoadmapSpine() {
               marginBottom: "12px"
             }}
           >
-            Stages 01 – 02 • Origin to Acceleration
+            Stages 01 – 02 // Origin to Acceleration
           </span>
           <h2 style={{ fontSize: "clamp(2.4rem, 5vw, 3.6rem)", fontWeight: 800, margin: "0 0 14px 0", color: "#ffffff" }}>
             The Builder's <span style={{ color: "#38bdf8" }}>Roadmap</span>
@@ -78,65 +81,114 @@ export default function RoadmapSpine() {
           </p>
         </div>
 
-        {/* Vertical/Grid Spatial Milestones */}
-        <div style={{ display: "grid", gap: "24px" }}>
-          {roadmapStages.map((milestone, idx) => (
-            <div
-              key={idx}
-              className="glass-panel"
-              style={{
-                padding: "32px",
-                background: "rgba(10, 15, 26, 0.75)",
-                border: "1px solid rgba(255, 255, 255, 0.09)",
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-                gap: "24px",
-                alignItems: "center"
-              }}
-            >
-              <div>
-                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
-                  <span
-                    style={{
-                      fontFamily: "var(--font-mono, monospace)",
-                      fontSize: "0.85rem",
-                      fontWeight: 800,
-                      color: milestone.tagColor
-                    }}
-                  >
-                    STAGE {milestone.stage} // {milestone.code}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "0.72rem",
-                      padding: "2px 8px",
-                      borderRadius: "4px",
-                      background: "rgba(255, 255, 255, 0.05)",
-                      color: "#cbd5e1"
-                    }}
-                  >
-                    {milestone.tag}
-                  </span>
+        {/* Timeline with vertical glowing SVG track */}
+        <div style={{ position: "relative", paddingLeft: "32px" }}>
+          {/* Vertical Illuminated Line */}
+          <div
+            style={{
+              position: "absolute",
+              top: "20px",
+              bottom: "40px",
+              left: "11px",
+              width: "2px",
+              background: "linear-gradient(180deg, #38bdf8 0%, #818cf8 50%, #34d399 100%)",
+              opacity: 0.5
+            }}
+          />
+
+          <div style={{ display: "grid", gap: "32px" }}>
+            {milestones.map((m, idx) => (
+              <div key={idx} style={{ position: "relative" }}>
+                {/* Glowing Node Marker */}
+                <div
+                  style={{
+                    position: "absolute",
+                    left: "-32px",
+                    top: "26px",
+                    width: "24px",
+                    height: "24px",
+                    borderRadius: "50%",
+                    background: "#06070a",
+                    border: `2px solid ${m.tagColor}`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    boxShadow: `0 0 12px ${m.tagColor}60`,
+                    zIndex: 2
+                  }}
+                >
+                  <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: m.tagColor }} />
                 </div>
 
-                <h3 style={{ fontSize: "1.5rem", fontWeight: 800, color: "#ffffff", margin: "0 0 4px 0" }}>
-                  {milestone.title}
-                </h3>
-                <div style={{ fontSize: "0.95rem", color: "#38bdf8", fontWeight: 600 }}>
-                  {milestone.institution}
-                </div>
-              </div>
+                {/* Milestone Content Card */}
+                <div
+                  className="glass-panel"
+                  style={{
+                    padding: "28px 32px",
+                    background: "rgba(10, 15, 26, 0.8)",
+                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                    borderRadius: "16px"
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: "10px",
+                      marginBottom: "10px"
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <span
+                        style={{
+                          fontFamily: "var(--font-mono, monospace)",
+                          fontSize: "0.78rem",
+                          fontWeight: 800,
+                          color: m.tagColor,
+                          letterSpacing: "0.08em"
+                        }}
+                      >
+                        STAGE {m.stage} // {m.code}
+                      </span>
+                      <span
+                        style={{
+                          fontSize: "0.74rem",
+                          padding: "3px 10px",
+                          borderRadius: "9999px",
+                          background: `${m.tagColor}15`,
+                          border: `1px solid ${m.tagColor}30`,
+                          color: m.tagColor,
+                          fontWeight: 600
+                        }}
+                      >
+                        {m.tag}
+                      </span>
+                    </div>
 
-              <div>
-                <div style={{ fontSize: "0.82rem", color: "#64748b", marginBottom: "8px" }}>
-                  {milestone.period}
+                    <div style={{ fontSize: "0.8rem", color: "#94a3b8", display: "flex", alignItems: "center", gap: "6px" }}>
+                      <Calendar size={13} />
+                      <span>{m.period}</span>
+                    </div>
+                  </div>
+
+                  <h3 style={{ fontSize: "1.45rem", fontWeight: 700, color: "#ffffff", margin: "0 0 6px 0" }}>
+                    {m.title}
+                  </h3>
+
+                  <div style={{ fontSize: "0.95rem", color: "#38bdf8", fontWeight: 600, marginBottom: "12px", display: "flex", alignItems: "center", gap: "6px" }}>
+                    <Building size={14} />
+                    <span>{m.institution}</span>
+                  </div>
+
+                  <p style={{ margin: 0, color: "#cbd5e1", fontSize: "0.9rem", lineHeight: 1.6 }}>
+                    {m.summary}
+                  </p>
                 </div>
-                <p style={{ margin: 0, color: "#cbd5e1", fontSize: "0.9rem", lineHeight: 1.6 }}>
-                  {milestone.summary}
-                </p>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
