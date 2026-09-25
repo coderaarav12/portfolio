@@ -111,7 +111,7 @@ export default function MonumentShowcase() {
           {/* Action CTAs */}
           <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", justifyContent: "flex-start" }}>
             <a
-              href="https://edutechsrm.dpdns.org"
+              href="https://edutechsrm.in"
               target="_blank"
               rel="noreferrer"
               className="btn-primary"
@@ -198,7 +198,7 @@ export default function MonumentShowcase() {
               }}
             >
               <Lock size={12} color="#34d399" />
-              <span>https://edutechsrm.dpdns.org/portal</span>
+              <span>https://edutechsrm.in/dashboard</span>
             </div>
 
             {/* Live Indicator */}

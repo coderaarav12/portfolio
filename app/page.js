@@ -77,14 +77,14 @@ export default function PortfolioPage() {
         "Full-stack unified university portal providing sub-100ms access to academic timetables, exam room allocations, and automated syllabus revisions for SRMIST students.",
       tech: ["Next.js 16", "Cloudflare Workers", "FastAPI", "Python", "Tailwind CSS"],
       credentials: "ID: dm1234 | Pass: edutechsrm@124",
-      liveUrl: "https://edutechsrm.dpdns.org",
+      liveUrl: "https://edutechsrm.in",
       githubUrl: "https://github.com/coderaarav12"
     },
     {
       id: "ripple",
       title: "Ripple Emergency Mesh",
-      tagline: "Manipal Hackathon '26 Finalist Project",
-      tag: "Hackathon Finalist",
+      tagline: "Manipal Hackathon '26 Project",
+      tag: "Hackathon Project",
       category: "hackathon",
       accent: "#818cf8",
       metrics: "Sub-Second Routing • 0 SMS Gateway Dependency",
@@ -364,7 +364,7 @@ export default function PortfolioPage() {
                   maxWidth: "540px"
                 }}
               >
-                Undergraduate in Computer Science &amp; AI/ML at SRMIST KTR. Creator of <strong style={{ color: "#ffffff" }}>EdutechSRM</strong>{" "}(serving 250+ engineering students daily) and national hackathon finalist (Manipal &apos;26, Smart India Hackathon &apos;26). Engineering real-world AI automations, peer-to-peer edge networks, and production web systems.
+                Undergraduate in Computer Science &amp; AI/ML at SRMIST KTR. Creator of <strong style={{ color: "#ffffff" }}>EdutechSRM</strong>{" "}(serving 250+ engineering students daily) and developer of projects like Ripple (Manipal &apos;26) and SyncMasters (SIH &apos;26). Engineering real-world AI automations, peer-to-peer edge networks, and production web systems.
               </p>
 
               {/* Status telemetry pill */}
@@ -384,7 +384,7 @@ export default function PortfolioPage() {
                 }}
               >
                 <span style={{ color: "#34d399", fontWeight: 700 }}>● PRODUCTION</span>
-                <span>edutechsrm.dpdns.org</span>
+                <span>edutechsrm.in</span>
                 <span style={{ color: "#64748b" }}>•</span>
                 <span style={{ color: "#38bdf8" }}>250+ Active Campus Users</span>
               </div>
@@ -550,7 +550,7 @@ export default function PortfolioPage() {
 
               <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
                 <a
-                  href="https://edutechsrm.dpdns.org"
+                  href="https://edutechsrm.in"
                   target="_blank"
                   rel="noreferrer"
                   className="btn-primary"
@@ -633,7 +633,7 @@ export default function PortfolioPage() {
                   }}
                 >
                   <Lock size={12} color="#34d399" />
-                  <span>https://edutechsrm.dpdns.org/dashboard</span>
+                  <span>https://edutechsrm.in/dashboard</span>
                 </div>
 
                 <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.72rem", color: "#34d399", fontWeight: 600 }}>

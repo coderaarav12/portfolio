@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 
 export default function HeroScene() {
   const containerRef = useRef(null);
@@ -18,9 +19,9 @@ export default function HeroScene() {
 
     // Camera
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 0, 7.2);
+    camera.position.set(0, 0, 7.5);
 
-    // WebGL Renderer
+    // High-Performance WebGL Renderer
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
       antialias: true,
@@ -29,115 +30,49 @@ export default function HeroScene() {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.35;
+    renderer.toneMappingExposure = 1.25;
     container.appendChild(renderer.domElement);
 
-    // Multi-Angle Directional & Studio Lights for Radiant Specular Facets
-    const ambientLight = new THREE.AmbientLight(0x0a192f, 2.5);
+    // Realistic HDR Studio Environment via PMREMGenerator
+    const pmremGenerator = new THREE.PMREMGenerator(renderer);
+    pmremGenerator.compileEquirectangularShader();
+    const envTexture = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+    scene.environment = envTexture;
+
+    // Lighting (Studio Key + Rim Lights)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
 
-    // Front high-power key light for glistening highlights on facets
-    const keyLight = new THREE.DirectionalLight(0xffffff, 4.0);
-    keyLight.position.set(3, 4, 6);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 3.5);
+    keyLight.position.set(4, 5, 6);
     scene.add(keyLight);
 
-    // Cyan electric rim light
-    const rimCyan = new THREE.DirectionalLight(0x00f0ff, 4.5);
-    rimCyan.position.set(-6, 2, 2);
+    const rimCyan = new THREE.DirectionalLight(0x38bdf8, 4.0);
+    rimCyan.position.set(-6, -2, 3);
     scene.add(rimCyan);
 
-    // Violet / Magenta accent light
-    const accentViolet = new THREE.DirectionalLight(0xc084fc, 3.5);
-    accentViolet.position.set(4, -4, 3);
-    scene.add(accentViolet);
+    const rimViolet = new THREE.DirectionalLight(0xa855f7, 3.0);
+    rimViolet.position.set(3, -5, -2);
+    scene.add(rimViolet);
 
-    // Soft point light right in the center for internal crystal luminescence
-    const centerGlow = new THREE.PointLight(0x38bdf8, 25, 8);
-    centerGlow.position.set(0, 0, 0);
-    scene.add(centerGlow);
-
-    // Central Master Group for coordinated rotation & floating
-    const coreGroup = new THREE.Group();
-    scene.add(coreGroup);
-
-    // 1. Faceted Radiant Prismatic Crystal Core
-    const coreGeometry = new THREE.IcosahedronGeometry(1.6, 1);
-    const coreMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0x0a192f,
-      emissive: 0x0284c7,
-      emissiveIntensity: 0.12,
-      roughness: 0.14,
-      metalness: 0.85,
+    // Realistic Sculpted 3D Sculpture: Iridescent Liquid Titanium Torus Knot
+    const knotGeometry = new THREE.TorusKnotGeometry(1.65, 0.44, 256, 48, 2, 3);
+    const knotMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0x0f172a,
+      metalness: 0.95,
+      roughness: 0.09,
       clearcoat: 1.0,
-      clearcoatRoughness: 0.08,
-      flatShading: true
+      clearcoatRoughness: 0.06,
+      iridescence: 0.9,
+      iridescenceIOR: 1.6,
+      reflectivity: 0.95,
+      envMapIntensity: 1.8
     });
-    const coreMesh = new THREE.Mesh(coreGeometry, coreMaterial);
-    coreGroup.add(coreMesh);
+    const knotMesh = new THREE.Mesh(knotGeometry, knotMaterial);
+    scene.add(knotMesh);
 
-    // 2. Facet Edge Highlights (Gives the crystal crisp glowing edges)
-    const wireGeometry = new THREE.IcosahedronGeometry(1.604, 1);
-    const wireMaterial = new THREE.MeshBasicMaterial({
-      color: 0x38bdf8,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.22
-    });
-    const wireMesh = new THREE.Mesh(wireGeometry, wireMaterial);
-    coreGroup.add(wireMesh);
-
-    // 3. Inner Pulsing Core
-    const innerGeometry = new THREE.OctahedronGeometry(0.85, 0);
-    const innerMaterial = new THREE.MeshStandardMaterial({
-      color: 0x38bdf8,
-      emissive: 0x38bdf8,
-      emissiveIntensity: 1.2,
-      roughness: 0.1,
-      metalness: 0.5
-    });
-    const innerMesh = new THREE.Mesh(innerGeometry, innerMaterial);
-    coreGroup.add(innerMesh);
-
-    // 4. Gyroscopic Orbital Ring 1 (Cyan Neon Ring)
-    const ring1Geo = new THREE.TorusGeometry(2.35, 0.02, 16, 120);
-    const ring1Mat = new THREE.MeshStandardMaterial({
-      color: 0x00f0ff,
-      emissive: 0x00f0ff,
-      emissiveIntensity: 1.2,
-      metalness: 0.9,
-      roughness: 0.1
-    });
-    const ring1 = new THREE.Mesh(ring1Geo, ring1Mat);
-    ring1.rotation.x = Math.PI / 3.2;
-    ring1.rotation.y = Math.PI / 6;
-    coreGroup.add(ring1);
-
-    // 5. Gyroscopic Orbital Ring 2 (Electric Purple Ring)
-    const ring2Geo = new THREE.TorusGeometry(2.7, 0.016, 16, 120);
-    const ring2Mat = new THREE.MeshStandardMaterial({
-      color: 0xd946ef,
-      emissive: 0xd946ef,
-      emissiveIntensity: 1.2,
-      metalness: 0.9,
-      roughness: 0.1
-    });
-    const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
-    ring2.rotation.x = -Math.PI / 3.8;
-    ring2.rotation.y = -Math.PI / 4.5;
-    coreGroup.add(ring2);
-
-    // 5. Orbiting Micro-Beacon Satellites
-    const beaconGeo = new THREE.SphereGeometry(0.045, 16, 16);
-    const beaconMat1 = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
-    const beacon1 = new THREE.Mesh(beaconGeo, beaconMat1);
-    coreGroup.add(beacon1);
-
-    const beaconMat2 = new THREE.MeshBasicMaterial({ color: 0xf472b6 });
-    const beacon2 = new THREE.Mesh(beaconGeo, beaconMat2);
-    coreGroup.add(beacon2);
-
-    // 6. Ambient Floating Data Points (Crisp, Subtle)
-    const particleCount = 140;
+    // Subtle Floating Ambient Dust Embers
+    const particleCount = 100;
     const particleGeo = new THREE.BufferGeometry();
     const particlePos = new Float32Array(particleCount * 3);
 
@@ -149,10 +84,10 @@ export default function HeroScene() {
     particleGeo.setAttribute("position", new THREE.BufferAttribute(particlePos, 3));
 
     const particleMat = new THREE.PointsMaterial({
-      color: 0x94a3b8,
-      size: 0.035,
+      color: 0x38bdf8,
+      size: 0.03,
       transparent: true,
-      opacity: 0.5
+      opacity: 0.4
     });
     const particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
@@ -191,44 +126,23 @@ export default function HeroScene() {
       animId = requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
 
-      // Smooth mouse follow with spring damping
-      currentX += (targetX - currentX) * 0.05;
-      currentY += (targetY - currentY) * 0.05;
+      // Damped mouse tracking
+      currentX += (targetX - currentX) * 0.04;
+      currentY += (targetY - currentY) * 0.04;
 
-      // Gentle floating levitation
-      const floatY = Math.sin(elapsedTime * 1.4) * 0.12;
-      coreGroup.position.y = floatY;
+      // Realistic floating motion
+      const floatY = Math.sin(elapsedTime * 1.2) * 0.12;
+      knotMesh.position.y = floatY;
 
-      // Crystal faceted core rotation
-      coreMesh.rotation.x = elapsedTime * 0.22 + currentY * 0.4;
-      coreMesh.rotation.y = elapsedTime * 0.32 + currentX * 0.6;
+      // Slow cinematic rotation with mouse parallax
+      knotMesh.rotation.x = elapsedTime * 0.25 + currentY * 0.5;
+      knotMesh.rotation.y = elapsedTime * 0.35 + currentX * 0.7;
 
-      // Inner energy core rotates opposite for mechanical depth
-      innerMesh.rotation.x = -elapsedTime * 0.4;
-      innerMesh.rotation.y = -elapsedTime * 0.5;
+      // Key light subtle tracking
+      keyLight.position.x = 4 + currentX * 2;
+      keyLight.position.y = 5 - currentY * 2;
 
-      // Gyroscopic orbital rings spin along their respective axes
-      ring1.rotation.z = elapsedTime * 0.45;
-      ring2.rotation.z = -elapsedTime * 0.35;
-
-      // Orbiting satellites follow the rings
-      const r1Angle = elapsedTime * 0.8;
-      beacon1.position.x = Math.cos(r1Angle) * 2.35;
-      beacon1.position.y = Math.sin(r1Angle) * 2.35 * Math.sin(Math.PI / 3.2);
-      beacon1.position.z = Math.sin(r1Angle) * 2.35 * Math.cos(Math.PI / 3.2);
-
-      const r2Angle = -elapsedTime * 0.65;
-      beacon2.position.x = Math.cos(r2Angle) * 2.7 * Math.cos(-Math.PI / 5);
-      beacon2.position.y = Math.sin(r2Angle) * 2.7;
-      beacon2.position.z = Math.cos(r2Angle) * 2.7 * Math.sin(-Math.PI / 5);
-
-      // Light response to cursor
-      keyLight.position.x = 3 + currentX * 3;
-      keyLight.position.y = 4 - currentY * 3;
-      rimCyan.position.x = -6 + currentX * 2;
-      rimCyan.position.y = 2 - currentY * 2;
-
-      // Subtle particle field drift
+      // Subtle particle drift
       particles.rotation.y = elapsedTime * 0.02;
 
       renderer.render(scene, camera);
@@ -241,21 +155,12 @@ export default function HeroScene() {
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("resize", onResize);
 
-      coreGeometry.dispose();
-      coreMaterial.dispose();
-      wireGeometry.dispose();
-      wireMaterial.dispose();
-      innerGeometry.dispose();
-      innerMaterial.dispose();
-      ring1Geo.dispose();
-      ring1Mat.dispose();
-      ring2Geo.dispose();
-      ring2Mat.dispose();
-      beaconGeo.dispose();
-      beaconMat1.dispose();
-      beaconMat2.dispose();
+      knotGeometry.dispose();
+      knotMaterial.dispose();
       particleGeo.dispose();
       particleMat.dispose();
+      envTexture.dispose();
+      pmremGenerator.dispose();
       renderer.dispose();
 
       if (container && renderer.domElement) {
@@ -276,15 +181,15 @@ export default function HeroScene() {
         justifyContent: "center"
       }}
     >
-      {/* Soft atmospheric ambient glow behind the crystal */}
+      {/* Soft atmospheric ambient backlight */}
       <div
         style={{
           position: "absolute",
-          width: "320px",
-          height: "320px",
+          width: "360px",
+          height: "360px",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(56, 189, 248, 0.18) 0%, rgba(168, 85, 247, 0.12) 50%, transparent 70%)",
-          filter: "blur(40px)",
+          background: "radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, rgba(168, 85, 247, 0.1) 50%, transparent 70%)",
+          filter: "blur(50px)",
           pointerEvents: "none"
         }}
       />

@@ -24,7 +24,7 @@ export default function ProjectLandmarks() {
       id: "ripple",
       code: "LM-01",
       title: "Ripple Emergency Mesh",
-      context: "Manipal Hackathon '26 Finalist",
+      context: "Manipal Hackathon '26 Project",
       role: "Lead Systems Architect",
       summary:
         "Engineered an offline-first disaster communication protocol connecting affected populations when cellular infrastructure collapses. Utilizes WebRTC peer-to-peer data channels with zero third-party SMS dependency.",
