@@ -711,7 +711,7 @@ async function serveWidget(request, kind, env, ctx) {
   return res;
 }
 
-export const __internals = { renderCalendar, renderGraph, computeLevels };
+export const __internals = { renderCalendar, renderGraph, computeLevels, renderStats };
 
 /* ---------------- badges ---------------- */
 
@@ -854,6 +854,8 @@ export default {
 
     if (p === "/banner.svg" || p === "/banner") return serveBanner(request);
     if (p === "/github/header.svg" || p === "/github/header") return serveBanner(request);
+    if (p === "/stats.svg" || p === "/stats" || p === "/github/stats.svg" || p === "/github/stats")
+      return serveStats(request);
     let res = await env.ASSETS.fetch(request);
     if (res.status === 404 && !p.includes(".")) {
       const htmlUrl = new URL(request.url);
