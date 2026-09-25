@@ -10,17 +10,17 @@ export default function HeroScene() {
     const container = containerRef.current;
     if (!container) return;
 
-    let width = container.clientWidth || 400;
-    let height = container.clientHeight || 400;
+    let width = container.clientWidth || 450;
+    let height = container.clientHeight || 450;
 
     // Scene
     const scene = new THREE.Scene();
 
     // Camera
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 0, 7.5);
+    camera.position.set(0, 0, 7.2);
 
-    // Renderer
+    // WebGL Renderer
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
       antialias: true,
@@ -29,77 +29,135 @@ export default function HeroScene() {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.2;
+    renderer.toneMappingExposure = 1.35;
     container.appendChild(renderer.domElement);
 
-    // Lighting (Cinematic Studio Lights)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    // Multi-Angle Directional & Studio Lights for Radiant Specular Facets
+    const ambientLight = new THREE.AmbientLight(0x0a192f, 2.5);
     scene.add(ambientLight);
 
-    const lightCyan = new THREE.PointLight(0x38bdf8, 25, 20);
-    lightCyan.position.set(4, 3, 5);
-    scene.add(lightCyan);
+    // Front high-power key light for glistening highlights on facets
+    const keyLight = new THREE.DirectionalLight(0xffffff, 4.0);
+    keyLight.position.set(3, 4, 6);
+    scene.add(keyLight);
 
-    const lightViolet = new THREE.PointLight(0x818cf8, 20, 20);
-    lightViolet.position.set(-4, -2, 4);
-    scene.add(lightViolet);
+    // Cyan electric rim light
+    const rimCyan = new THREE.DirectionalLight(0x00f0ff, 4.5);
+    rimCyan.position.set(-6, 2, 2);
+    scene.add(rimCyan);
 
-    const lightEmerald = new THREE.PointLight(0x34d399, 15, 20);
-    lightEmerald.position.set(0, -4, 3);
-    scene.add(lightEmerald);
+    // Violet / Magenta accent light
+    const accentViolet = new THREE.DirectionalLight(0xc084fc, 3.5);
+    accentViolet.position.set(4, -4, 3);
+    scene.add(accentViolet);
 
-    // Main 3D Artifact: Smooth Glass Torus Knot
-    const geometry = new THREE.TorusKnotGeometry(1.6, 0.45, 128, 32);
+    // Soft point light right in the center for internal crystal luminescence
+    const centerGlow = new THREE.PointLight(0x38bdf8, 25, 8);
+    centerGlow.position.set(0, 0, 0);
+    scene.add(centerGlow);
 
-    const material = new THREE.MeshPhysicalMaterial({
-      color: 0x0f172a,
-      emissive: 0x070b14,
-      roughness: 0.15,
-      metalness: 0.1,
+    // Central Master Group for coordinated rotation & floating
+    const coreGroup = new THREE.Group();
+    scene.add(coreGroup);
+
+    // 1. Faceted Radiant Prismatic Crystal Core
+    const coreGeometry = new THREE.IcosahedronGeometry(1.6, 1);
+    const coreMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0x0a192f,
+      emissive: 0x0284c7,
+      emissiveIntensity: 0.12,
+      roughness: 0.14,
+      metalness: 0.85,
       clearcoat: 1.0,
-      clearcoatRoughness: 0.1,
-      transmission: 0.65, // Refractive glass aesthetic
-      ior: 1.5,
-      transparent: true,
-      opacity: 0.95
+      clearcoatRoughness: 0.08,
+      flatShading: true
     });
+    const coreMesh = new THREE.Mesh(coreGeometry, coreMaterial);
+    coreGroup.add(coreMesh);
 
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-
-    // Inner Luminous Wireframe Skeleton for high-tech aesthetic
-    const innerGeo = new THREE.TorusKnotGeometry(1.58, 0.43, 64, 16);
-    const innerMat = new THREE.MeshBasicMaterial({
+    // 2. Facet Edge Highlights (Gives the crystal crisp glowing edges)
+    const wireGeometry = new THREE.IcosahedronGeometry(1.604, 1);
+    const wireMaterial = new THREE.MeshBasicMaterial({
       color: 0x38bdf8,
       wireframe: true,
       transparent: true,
-      opacity: 0.25
+      opacity: 0.22
     });
-    const innerMesh = new THREE.Mesh(innerGeo, innerMat);
-    scene.add(innerMesh);
+    const wireMesh = new THREE.Mesh(wireGeometry, wireMaterial);
+    coreGroup.add(wireMesh);
 
-    // Clean, subtle floating data dust particles
-    const particleCount = 120;
+    // 3. Inner Pulsing Core
+    const innerGeometry = new THREE.OctahedronGeometry(0.85, 0);
+    const innerMaterial = new THREE.MeshStandardMaterial({
+      color: 0x38bdf8,
+      emissive: 0x38bdf8,
+      emissiveIntensity: 1.2,
+      roughness: 0.1,
+      metalness: 0.5
+    });
+    const innerMesh = new THREE.Mesh(innerGeometry, innerMaterial);
+    coreGroup.add(innerMesh);
+
+    // 4. Gyroscopic Orbital Ring 1 (Cyan Neon Ring)
+    const ring1Geo = new THREE.TorusGeometry(2.35, 0.02, 16, 120);
+    const ring1Mat = new THREE.MeshStandardMaterial({
+      color: 0x00f0ff,
+      emissive: 0x00f0ff,
+      emissiveIntensity: 1.2,
+      metalness: 0.9,
+      roughness: 0.1
+    });
+    const ring1 = new THREE.Mesh(ring1Geo, ring1Mat);
+    ring1.rotation.x = Math.PI / 3.2;
+    ring1.rotation.y = Math.PI / 6;
+    coreGroup.add(ring1);
+
+    // 5. Gyroscopic Orbital Ring 2 (Electric Purple Ring)
+    const ring2Geo = new THREE.TorusGeometry(2.7, 0.016, 16, 120);
+    const ring2Mat = new THREE.MeshStandardMaterial({
+      color: 0xd946ef,
+      emissive: 0xd946ef,
+      emissiveIntensity: 1.2,
+      metalness: 0.9,
+      roughness: 0.1
+    });
+    const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
+    ring2.rotation.x = -Math.PI / 3.8;
+    ring2.rotation.y = -Math.PI / 4.5;
+    coreGroup.add(ring2);
+
+    // 5. Orbiting Micro-Beacon Satellites
+    const beaconGeo = new THREE.SphereGeometry(0.045, 16, 16);
+    const beaconMat1 = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+    const beacon1 = new THREE.Mesh(beaconGeo, beaconMat1);
+    coreGroup.add(beacon1);
+
+    const beaconMat2 = new THREE.MeshBasicMaterial({ color: 0xf472b6 });
+    const beacon2 = new THREE.Mesh(beaconGeo, beaconMat2);
+    coreGroup.add(beacon2);
+
+    // 6. Ambient Floating Data Points (Crisp, Subtle)
+    const particleCount = 140;
     const particleGeo = new THREE.BufferGeometry();
     const particlePos = new Float32Array(particleCount * 3);
 
     for (let i = 0; i < particleCount * 3; i += 3) {
-      particlePos[i] = (Math.random() - 0.5) * 14;
-      particlePos[i + 1] = (Math.random() - 0.5) * 12;
-      particlePos[i + 2] = (Math.random() - 0.5) * 10;
+      particlePos[i] = (Math.random() - 0.5) * 12;
+      particlePos[i + 1] = (Math.random() - 0.5) * 10;
+      particlePos[i + 2] = (Math.random() - 0.5) * 8;
     }
     particleGeo.setAttribute("position", new THREE.BufferAttribute(particlePos, 3));
 
     const particleMat = new THREE.PointsMaterial({
       color: 0x94a3b8,
-      size: 0.04,
+      size: 0.035,
       transparent: true,
-      opacity: 0.4
+      opacity: 0.5
     });
     const particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
 
-    // Mouse Interaction
+    // Mouse Damping Interpolation
     let targetX = 0;
     let targetY = 0;
     let currentX = 0;
@@ -114,11 +172,11 @@ export default function HeroScene() {
     };
     window.addEventListener("mousemove", onMouseMove, { passive: true });
 
-    // Resize
+    // Handle Window Resize
     const onResize = () => {
       if (!container) return;
-      width = container.clientWidth || 400;
-      height = container.clientHeight || 400;
+      width = container.clientWidth || 450;
+      height = container.clientHeight || 450;
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
@@ -127,35 +185,51 @@ export default function HeroScene() {
 
     // Animation Loop
     let animId;
-    let clock = new THREE.Clock();
+    const clock = new THREE.Clock();
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
-
       const elapsedTime = clock.getElapsedTime();
 
-      // Smooth mouse interpolation
+      // Smooth mouse follow with spring damping
       currentX += (targetX - currentX) * 0.05;
       currentY += (targetY - currentY) * 0.05;
 
       // Gentle floating levitation
-      const floatY = Math.sin(elapsedTime * 1.5) * 0.15;
-      mesh.position.y = floatY;
-      innerMesh.position.y = floatY;
+      const floatY = Math.sin(elapsedTime * 1.4) * 0.12;
+      coreGroup.position.y = floatY;
 
-      // Smooth slow rotation + mouse tilt
-      mesh.rotation.x = elapsedTime * 0.3 + currentY * 0.6;
-      mesh.rotation.y = elapsedTime * 0.4 + currentX * 0.8;
+      // Crystal faceted core rotation
+      coreMesh.rotation.x = elapsedTime * 0.22 + currentY * 0.4;
+      coreMesh.rotation.y = elapsedTime * 0.32 + currentX * 0.6;
 
-      innerMesh.rotation.x = mesh.rotation.x;
-      innerMesh.rotation.y = mesh.rotation.y;
+      // Inner energy core rotates opposite for mechanical depth
+      innerMesh.rotation.x = -elapsedTime * 0.4;
+      innerMesh.rotation.y = -elapsedTime * 0.5;
 
-      // Move lights slightly with mouse
-      lightCyan.position.x = 4 + currentX * 2;
-      lightCyan.position.y = 3 - currentY * 2;
+      // Gyroscopic orbital rings spin along their respective axes
+      ring1.rotation.z = elapsedTime * 0.45;
+      ring2.rotation.z = -elapsedTime * 0.35;
 
-      // Rotate subtle particles
-      particles.rotation.y = elapsedTime * 0.03;
+      // Orbiting satellites follow the rings
+      const r1Angle = elapsedTime * 0.8;
+      beacon1.position.x = Math.cos(r1Angle) * 2.35;
+      beacon1.position.y = Math.sin(r1Angle) * 2.35 * Math.sin(Math.PI / 3.2);
+      beacon1.position.z = Math.sin(r1Angle) * 2.35 * Math.cos(Math.PI / 3.2);
+
+      const r2Angle = -elapsedTime * 0.65;
+      beacon2.position.x = Math.cos(r2Angle) * 2.7 * Math.cos(-Math.PI / 5);
+      beacon2.position.y = Math.sin(r2Angle) * 2.7;
+      beacon2.position.z = Math.cos(r2Angle) * 2.7 * Math.sin(-Math.PI / 5);
+
+      // Light response to cursor
+      keyLight.position.x = 3 + currentX * 3;
+      keyLight.position.y = 4 - currentY * 3;
+      rimCyan.position.x = -6 + currentX * 2;
+      rimCyan.position.y = 2 - currentY * 2;
+
+      // Subtle particle field drift
+      particles.rotation.y = elapsedTime * 0.02;
 
       renderer.render(scene, camera);
     };
@@ -167,10 +241,19 @@ export default function HeroScene() {
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("resize", onResize);
 
-      geometry.dispose();
-      material.dispose();
-      innerGeo.dispose();
-      innerMat.dispose();
+      coreGeometry.dispose();
+      coreMaterial.dispose();
+      wireGeometry.dispose();
+      wireMaterial.dispose();
+      innerGeometry.dispose();
+      innerMaterial.dispose();
+      ring1Geo.dispose();
+      ring1Mat.dispose();
+      ring2Geo.dispose();
+      ring2Mat.dispose();
+      beaconGeo.dispose();
+      beaconMat1.dispose();
+      beaconMat2.dispose();
       particleGeo.dispose();
       particleMat.dispose();
       renderer.dispose();
@@ -183,17 +266,39 @@ export default function HeroScene() {
 
   return (
     <div
-      ref={containerRef}
       style={{
+        position: "relative",
         width: "100%",
         height: "100%",
-        minHeight: "420px",
-        position: "relative",
+        minHeight: "440px",
         display: "flex",
         alignItems: "center",
-        justifyContent: "center",
-        cursor: "grab"
+        justifyContent: "center"
       }}
-    />
+    >
+      {/* Soft atmospheric ambient glow behind the crystal */}
+      <div
+        style={{
+          position: "absolute",
+          width: "320px",
+          height: "320px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(56, 189, 248, 0.18) 0%, rgba(168, 85, 247, 0.12) 50%, transparent 70%)",
+          filter: "blur(40px)",
+          pointerEvents: "none"
+        }}
+      />
+      <div
+        ref={containerRef}
+        style={{
+          width: "100%",
+          height: "100%",
+          minHeight: "440px",
+          position: "relative",
+          zIndex: 2,
+          cursor: "grab"
+        }}
+      />
+    </div>
   );
 }

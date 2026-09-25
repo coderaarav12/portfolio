@@ -296,7 +296,7 @@ export default function PortfolioPage() {
           >
             {/* Left: Text & CTAs */}
             <div>
-              <div style={{ marginBottom: "20px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "18px", flexWrap: "wrap" }}>
                 <span
                   style={{
                     display: "inline-flex",
@@ -304,54 +304,90 @@ export default function PortfolioPage() {
                     gap: "8px",
                     padding: "6px 14px",
                     borderRadius: "9999px",
-                    background: "rgba(10, 15, 26, 0.8)",
-                    border: "1px solid rgba(255, 255, 255, 0.12)",
+                    background: "rgba(15, 23, 42, 0.8)",
+                    border: "1px solid rgba(56, 189, 248, 0.3)",
                     backdropFilter: "blur(12px)",
-                    fontSize: "0.78rem",
+                    fontSize: "0.76rem",
                     fontWeight: 700,
                     color: "#38bdf8",
-                    letterSpacing: "0.05em",
+                    letterSpacing: "0.06em",
                     textTransform: "uppercase"
                   }}
                 >
                   <span className="status-pulse-dot" />
-                  Aarav Goel • AI/ML & Full-Stack Engineer
+                  SRMIST KTR &apos;29 • B.Tech AI &amp; ML
+                </span>
+                <span
+                  style={{
+                    fontSize: "0.78rem",
+                    color: "#94a3b8",
+                    fontFamily: "var(--font-mono, monospace)"
+                  }}
+                >
+                  Semester 3 • CGPA 6.86
                 </span>
               </div>
 
               <h1
                 style={{
-                  fontSize: "clamp(2.6rem, 5.5vw, 4.4rem)",
+                  fontSize: "clamp(2.4rem, 4.8vw, 3.8rem)",
                   fontWeight: 800,
-                  lineHeight: 1.08,
-                  letterSpacing: "-0.03em",
-                  margin: "0 0 20px 0",
+                  lineHeight: 1.12,
+                  letterSpacing: "-0.035em",
+                  margin: "0 0 16px 0",
                   color: "#ffffff"
                 }}
               >
-                Crafting intelligent systems at the intersection of{" "}
+                Aarav Goel
                 <span
                   style={{
-                    background: "linear-gradient(135deg, #38bdf8 0%, #34d399 50%, #818cf8 100%)",
+                    display: "block",
+                    fontSize: "clamp(1.25rem, 2.6vw, 1.85rem)",
+                    fontWeight: 600,
+                    letterSpacing: "-0.02em",
+                    marginTop: "6px",
+                    background: "linear-gradient(135deg, #38bdf8 0%, #a855f7 60%, #34d399 100%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent"
                   }}
                 >
-                  AI, code, and design.
+                  AI/ML Engineer &amp; Systems Builder
                 </span>
               </h1>
 
               <p
                 style={{
-                  fontSize: "1.12rem",
+                  fontSize: "1.06rem",
                   color: "#cbd5e1",
-                  lineHeight: 1.6,
-                  marginBottom: "32px",
-                  maxWidth: "560px"
+                  lineHeight: 1.65,
+                  marginBottom: "24px",
+                  maxWidth: "540px"
                 }}
               >
-                Undergraduate in Computer Science & AI/ML at SRMIST KTR (Semester 3). Creator of <strong>EdutechSRM</strong> (250+ verified engineering students) and builder of vision-driven hackathon architectures.
+                Undergraduate in Computer Science &amp; AI/ML at SRMIST KTR. Creator of <strong style={{ color: "#ffffff" }}>EdutechSRM</strong>{" "}(serving 250+ engineering students daily) and national hackathon finalist (Manipal &apos;26, Smart India Hackathon &apos;26). Engineering real-world AI automations, peer-to-peer edge networks, and production web systems.
               </p>
+
+              {/* Status telemetry pill */}
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  padding: "6px 14px",
+                  borderRadius: "8px",
+                  background: "rgba(15, 23, 42, 0.65)",
+                  border: "1px solid rgba(255, 255, 255, 0.08)",
+                  marginBottom: "28px",
+                  fontFamily: "var(--font-mono, monospace)",
+                  fontSize: "0.78rem",
+                  color: "#94a3b8"
+                }}
+              >
+                <span style={{ color: "#34d399", fontWeight: 700 }}>● PRODUCTION</span>
+                <span>edutechsrm.dpdns.org</span>
+                <span style={{ color: "#64748b" }}>•</span>
+                <span style={{ color: "#38bdf8" }}>250+ Active Campus Users</span>
+              </div>
 
               <div
                 style={{
@@ -366,21 +402,21 @@ export default function PortfolioPage() {
                   href="#work"
                   className="btn-primary"
                   style={{
-                    padding: "13px 28px",
+                    padding: "13px 26px",
                     fontSize: "0.92rem",
                     background: "linear-gradient(135deg, #0284c7 0%, #0369a1 100%)",
                     boxShadow: "0 0 25px rgba(14, 165, 233, 0.4)",
                     border: "1px solid rgba(56, 189, 248, 0.4)"
                   }}
                 >
-                  <span>Explore Work</span>
+                  <span>Explore Projects</span>
                   <ArrowUpRight size={15} />
                 </a>
 
                 <button
                   onClick={() => handleCopy("goelaarav290@gmail.com", "hero-email")}
                   className="btn-secondary"
-                  style={{ padding: "13px 22px", fontSize: "0.92rem" }}
+                  style={{ padding: "13px 20px", fontSize: "0.92rem" }}
                 >
                   {copiedKey === "hero-email" ? (
                     <>
@@ -394,6 +430,28 @@ export default function PortfolioPage() {
                     </>
                   )}
                 </button>
+
+                <a
+                  href="https://github.com/coderaarav12"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn-secondary"
+                  style={{ padding: "13px 18px", fontSize: "0.92rem", display: "inline-flex", alignItems: "center", gap: "6px" }}
+                >
+                  <GithubIcon size={16} />
+                  <span>GitHub</span>
+                </a>
+
+                <a
+                  href="https://linkedin.com/in/aaravgoel12"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn-secondary"
+                  style={{ padding: "13px 18px", fontSize: "0.92rem", display: "inline-flex", alignItems: "center", gap: "6px" }}
+                >
+                  <LinkedinIcon size={16} />
+                  <span>LinkedIn</span>
+                </a>
               </div>
 
               {/* Quick Metrics */}
