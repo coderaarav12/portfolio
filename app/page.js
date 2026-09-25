@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import confetti from "canvas-confetti";
+import WorldLoader from "./components/WorldLoader";
 import HeroScene from "./components/HeroScene";
 import SoundscapePlayer from "./components/SoundscapePlayer";
 import {
@@ -197,6 +198,8 @@ export default function PortfolioPage() {
 
   return (
     <div style={{ position: "relative", minHeight: "100vh", background: "#06070a", color: "#f8fafc" }}>
+      <WorldLoader />
+
       {/* Background Atmosphere */}
       <div className="ambient-video-container">
         <video
@@ -275,27 +278,10 @@ export default function PortfolioPage() {
       {/* Main Content */}
       <main style={{ position: "relative", zIndex: 10 }}>
         {/* ==================== HERO SECTION ==================== */}
-        <section
-          style={{
-            minHeight: "100vh",
-            display: "flex",
-            alignItems: "center",
-            padding: "130px 24px 70px 24px"
-          }}
-        >
-          <div
-            style={{
-              maxWidth: "1200px",
-              margin: "0 auto",
-              width: "100%",
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
-              gap: "48px",
-              alignItems: "center"
-            }}
-          >
+        <section className="hero-section">
+          <div className="hero-split-grid">
             {/* Left: Text & CTAs */}
-            <div>
+            <div className="hero-text-col">
               <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "18px", flexWrap: "wrap" }}>
                 <span
                   style={{
@@ -502,17 +488,8 @@ export default function PortfolioPage() {
               </div>
             </div>
 
-            {/* Right: Clean, Glossy 3D Glass Artifact */}
-            <div
-              style={{
-                height: "460px",
-                width: "100%",
-                position: "relative",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-            >
+            {/* Right: Interactive 3D Gravity Hanging Sculpture */}
+            <div className="hero-scene-container">
               <HeroScene />
             </div>
           </div>
