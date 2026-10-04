@@ -860,7 +860,7 @@ export default {
     // Handle the app tutorials redirect at the Cloudflare Edge level instead of client-side
     if (p === "/app_tutorials") {
       // Change the URL below to wherever you want to redirect the users
-      return Response.redirect("https://drive.google.com/drive/folders/1gDYo3WZRP6ItngaANJCPS8Q8y2GMKLIN?usp=drive_link", 301);
+      return Response.redirect("https://drive.google.com/drive/folders/1sqvi_gx5YjGuF1VCUn9n7HH1EY-EXN7_?usp=sharing", 301);
     }
 
     let res = await env.ASSETS.fetch(request);
