@@ -833,7 +833,7 @@ export default {
         status: 301,
         headers: {
           "Location":
-            "https://drive.google.com/drive/folders/1sqvi_gx5YjGuF1VCUn9n7HH1EY-EXN7_?usp=sharing",
+            "https://drive.google.com/drive/folders/1gDYo3WZRP6ItngaANJCPS8Q8y2GMKLIN?usp=drive_link",
           "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
           "Pragma": "no-cache",
           "Expires": "0",
