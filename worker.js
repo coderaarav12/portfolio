@@ -856,6 +856,13 @@ export default {
     if (p === "/github/header.svg" || p === "/github/header") return serveBanner(request);
     if (p === "/stats.svg" || p === "/stats" || p === "/github/stats.svg" || p === "/github/stats")
       return serveStats(request);
+      
+    // Handle the app tutorials redirect at the Cloudflare Edge level instead of client-side
+    if (p === "/app_tutorials") {
+      // Change the URL below to wherever you want to redirect the users
+      return Response.redirect("https://drive.google.com/drive/folders/1gDYo3WZRP6ItngaANJCPS8Q8y2GMKLIN?usp=drive_link", 301);
+    }
+
     let res = await env.ASSETS.fetch(request);
     if (res.status === 404 && !p.includes(".")) {
       const htmlUrl = new URL(request.url);
