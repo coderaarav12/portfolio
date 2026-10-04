@@ -823,24 +823,7 @@ export default {
     const p = url.pathname.replace(/\/$/, "");
 
     const cleanPath = p.toLowerCase();
-    if (
-      cleanPath === "/app_tutorials" ||
-      cleanPath === "/app-tutorials" ||
-      cleanPath === "/app_tutorials.html" ||
-      cleanPath === "/tutorials"
-    ) {
-      return new Response(null, {
-        status: 301,
-        headers: {
-          "Location":
-            "https://drive.google.com/drive/folders/1gDYo3WZRP6ItngaANJCPS8Q8y2GMKLIN?usp=drive_link",
-          "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
-          "Pragma": "no-cache",
-          "Expires": "0",
-        },
-      });
-    }
-
+    
     if (p === "/github/calendar.svg" || p === "/github/calendar")
       return serveWidget(request, "calendar", env, ctx);
 
