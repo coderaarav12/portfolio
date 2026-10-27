@@ -1,29 +1,25 @@
 {
-  "name": "aarav-goel-portfolio-cloudflare",
-  "version": "1.0.0",
-  "description": "",
-  "type": "module",
-  "main": "index.js",
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "deploy": "wrangler deploy"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "puppeteer": "^25.12.0",
-    "wrangler": "^4.35.0"
-  },
-  "dependencies": {
-    "canvas-confetti": "^1.9.4",
-    "lucide-react": "^1.48.0",
-    "motion": "^13.4.4",
-    "next": "^16.2.12",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "three": "^0.186.1"
-  }
+	"name": "aarav-goel-portfolio",
+	"version": "1.0.0",
+	"private": true,
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"lint": "eslint ."
+	},
+	"dependencies": {
+		"@vitejs/plugin-react": "latest",
+		"framer-motion": "^14.6.0",
+		"react": "latest",
+		"react-dom": "latest",
+		"vite": "latest"
+	},
+	"devDependencies": {
+		"@eslint/js": "latest",
+		"eslint": "^10.13.0",
+		"eslint-plugin-react-hooks": "latest",
+		"eslint-plugin-react-refresh": "latest",
+		"globals": "latest",
+		"jsrepo": "^3.8.2"
+	}
 }
