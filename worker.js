@@ -861,6 +861,17 @@ export default {
       return serveStats(request);
 
     let res = await env.ASSETS.fetch(request);
+    // Add CORS + correct content-type for self-hosted SVG icons
+    if (p.startsWith("/icons/") && p.endsWith(".svg") && res.status < 400) {
+      return new Response(res.body, {
+        status: res.status,
+        headers: {
+          "content-type": "image/svg+xml; charset=utf-8",
+          "cache-control": "public, max-age=86400, s-maxage=604800, stale-while-revalidate=2592000",
+          "access-control-allow-origin": "*",
+        },
+      });
+    }
     if (res.status === 404 && !p.includes(".")) {
       const htmlUrl = new URL(request.url);
       htmlUrl.pathname = `${p}.html`;
