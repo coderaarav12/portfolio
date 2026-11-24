@@ -22,12 +22,12 @@ const MON_FONT = "'JetBrains Mono','Cascadia Code','SF Mono',Consolas,Menlo,mono
 
 const THEMES = {
   dark: {
-    empty: "#1f242b",
-    ramp: ["#525252", "#8c8c8c", "#a7a7a7", "#ebebeb"],
+    empty: "#161b22",
+    ramp: ["#0e4429", "#006d32", "#26a641", "#39d353"],
     ink: "#e6edf3",
     muted: "#8b949e",
-    accent: "#34d399",
-    today: "#34d399",
+    accent: "#39d353",
+    today: "#39d353",
     grid: "rgba(255,255,255,0.06)",
   },
   light: {
@@ -175,6 +175,21 @@ function emptyYear() {
   return { source: "empty", days, total: 0 };
 }
 
+async function fetchContributionsAPI() {
+  const res = await fetch(`https://github-contributions-api.jogruber.de/v4/${USERNAME}?y=last`, {
+    headers: { "User-Agent": "portfolio-worker" },
+  });
+  if (!res.ok) throw new Error("contributions api failed");
+  const json = await res.json();
+  if (!json?.contributions?.length) throw new Error("empty contributions");
+  const days = json.contributions.map((c) => ({
+    date: c.date,
+    count: c.count,
+  }));
+  const total = json.total?.lastYear ?? days.reduce((sum, d) => sum + d.count, 0);
+  return { source: "contributions-api", days, total };
+}
+
 export async function getData(env) {
   const cached = memCache.get("gh");
   if (cached && Date.now() - cached.t < MEM_TTL) return cached.data;
@@ -184,10 +199,15 @@ export async function getData(env) {
       data = await fetchGraphQL(env.GITHUB_TOKEN);
     } catch (_) {}
   }
+  if (!data) {
+    try {
+      data = await fetchContributionsAPI();
+    } catch (_) {}
+  }
   if (!data && snapshot?.days?.length) {
     data = normalizeSnapshot(snapshot);
   }
-  if (data) {
+  if (data && data.source === "snapshot") {
     // overlay the freshest public push activity on top of the snapshot
     try {
       const events = await fetchPushEvents();
